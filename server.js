@@ -20,10 +20,7 @@ app.use(
 
 // Database connection
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParset: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI, {})
   .then(() => console.log("mongodb connected"))
   .catch((err) => console.log(err));
 

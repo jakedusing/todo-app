@@ -1,0 +1,23 @@
+<%- include("partials/header"); %>
+<main>
+  <h2>Your Todo List</h2>
+  <form action="/todos/add" method="POST">
+    <input type="text" name="title" placeholder="New task" required />
+    <button type="submit">Add Task</button>
+  </form>
+  <ul>
+    <% todos.forEach(todo => { %>
+    <li>
+      <span><%= todo.title %></span>
+      <form
+        action="/todos/delete<%= todo._id %>"
+        method="POST"
+        style="display: inline"
+      >
+        <button type="submit">Delete</button>
+      </form>
+    </li>
+    <%}); %>
+  </ul>
+</main>
+<%- include("partials/header"); %>
