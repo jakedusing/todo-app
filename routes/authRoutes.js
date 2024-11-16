@@ -27,4 +27,40 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.get("/register", (req, res) => {
+  res.render("register");
+});
+
+router.get("/login", (req, res) => {
+  res.render("login");
+});
+
+// Login Route
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      // Send early response if user not found
+      return res.status(400).json({ message: "Invalid username or password" });
+    }
+
+    // Check password validity
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      // Send early response if password doesn't match
+      return res.status(400).json({ message: "Invalid username or password" });
+    }
+
+    // Successful login, set session and redirect
+    req.session.userId = user._id; // Store user ID in session
+    return res.redirect("/dashboard"); // Redirect to a protected route (only if authenticated)
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
 module.exports = router;

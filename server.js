@@ -15,7 +15,12 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
-  session({ secret: "secret-key", resave: false, saveUninitialized: true })
+  session({
+    secret: "secret-key",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true },
+  })
 );
 
 // Database connection
