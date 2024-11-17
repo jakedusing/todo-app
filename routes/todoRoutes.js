@@ -4,8 +4,8 @@ const isAuthenticated = require("../middleware/auth");
 const router = express.Router();
 
 // Dashboard
-router.get("/", isAuthenticated, async (req, res) => {
-  const todos = await Todo.find({ userId: req.session.user._id });
+router.get("/dashboard", isAuthenticated, async (req, res) => {
+  const todos = await Todo.find({ userId: req.session.userId });
   res.render("dashboard", { title: "Dashboard", todos });
 });
 

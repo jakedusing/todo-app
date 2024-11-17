@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/User"); //import user model
+const isAuthenticated = require("../middleware/auth");
 const router = express.Router();
 
 // Reigster Route
@@ -56,11 +57,21 @@ router.post("/login", async (req, res) => {
 
     // Successful login, set session and redirect
     req.session.userId = user._id; // Store user ID in session
-    return res.redirect("/dashboard"); // Redirect to a protected route (only if authenticated)
+    return res.redirect("/todos/dashboard"); // Redirect to a protected route (only if authenticated)
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "Server error" });
   }
+});
+
+// logout route
+router.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Failed to log out" });
+    }
+    res.redirect("/auth/login"); // redirect to login page after logging out
+  });
 });
 
 module.exports = router;
