@@ -1,13 +1,19 @@
 <%- include("partials/header") %>
 <main>
-  <h1>Welcome to your Dashboard</h1>
-  <h2>Todos:</h2>
-
-  <!-- Display Existing Todos -->
+  <h1>Welcome to your Dashboard <%= username %></h1>
+  <h2>Incomplete Todos</h2>
   <ul>
-    <% if (todos && todos.length > 0) { %> <% todos.forEach((todo) => { %>
+    <% if (incompleteTodos && incompleteTodos.length > 0) { %> <%
+    incompleteTodos.forEach((todo) => { %>
     <li>
-      <%= todo.title %> <% if (!todo.completed) { %>
+      <%= todo.title %>
+      <form
+        action="/todos/toggle/<%= todo._id %>"
+        method="POST"
+        style="display: inline"
+      >
+        <button type="submit">Mark as Complete</button>
+      </form>
       <form
         action="/todos/delete/<%= todo._id %>"
         method="POST"
@@ -15,10 +21,35 @@
       >
         <button type="submit">Delete</button>
       </form>
-      <% } %>
     </li>
     <% }); %> <% } else { %>
-    <p>No todos yet. Add one below!</p>
+    <p>No incomplete todos!</p>
+    <% } %>
+  </ul>
+
+  <h2>Completed Todos</h2>
+  <ul>
+    <% if (completedTodos && completedTodos.length > 0) { %> <%
+    completedTodos.forEach((todo) => { %>
+    <li>
+      <s><%= todo.title %></s>
+      <form
+        action="/todos/toggle/<%= todo._id %>"
+        method="POST"
+        style="display: inline"
+      >
+        <button type="submit">Mark as Incomplete</button>
+      </form>
+      <form
+        action="/todos/delete/<%= todo._id %>"
+        method="POST"
+        style="display: inline"
+      >
+        <button type="submit">Delete</button>
+      </form>
+    </li>
+    <% }); %> <% } else { %>
+    <p>No completed todos!</p>
     <% } %>
   </ul>
 

@@ -12,7 +12,7 @@ const TodoSchema = new mongoose.Schema({
   },
   completed: {
     type: Boolean,
-    default: false,
+    default: false, // default to not complete
   },
   createdAt: {
     type: Date,
