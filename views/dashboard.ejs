@@ -1,26 +1,34 @@
 <%- include("partials/header") %>
 <main>
-  <h1>Welcome to Your Dashboard</h1>
+  <h1>Welcome to your Dashboard</h1>
+  <h2>Todos:</h2>
+
+  <!-- Display Existing Todos -->
   <ul>
-    <% if (todos.length > 0) { %> <% todos.forEach(todo => { %>
+    <% if (todos && todos.length > 0) { %> <% todos.forEach((todo) => { %>
     <li>
-      <%= todo.title %>
+      <%= todo.title %> <% if (!todo.completed) { %>
       <form
-        method="POST"
         action="/todos/delete/<%= todo._id %>"
+        method="POST"
         style="display: inline"
       >
         <button type="submit">Delete</button>
       </form>
+      <% } %>
     </li>
-    <% }) %> <% } else { %>
-    <li>No todos yet. Add one!</li>
+    <% }); %> <% } else { %>
+    <p>No todos yet. Add one below!</p>
     <% } %>
   </ul>
-  <form method="POST" action="/todos/add">
-    <input type="text" name="title" placeholder="New Todo" required />
-    <button type="submit">Add Todo</button>
+
+  <!-- Form to Add a New Todo -->
+  <h3>Add a New Todo</h3>
+  <form action="/todos/add" method="POST">
+    <input type="text" name="title" placeholder="Enter todo" required />
+    <button type="submit">Add</button>
   </form>
+
   <a href="/auth/logout">Logout</a>
 </main>
 <%- include("partials/footer"); %>
