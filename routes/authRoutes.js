@@ -64,6 +64,21 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Profile Route
+router.get("/profile", isAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId); // fetch user details
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    res.render("profile", { user }); // Render the profile view with user data
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
+
 // logout route
 router.get("/logout", (req, res) => {
   req.session.destroy((err) => {
