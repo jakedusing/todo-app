@@ -1,7 +1,14 @@
 <%- include("partials/header") %>
-<main>
-  <h1>Welcome, <%= user.username %>!</h1>
-  <p>Email: <%= user.email %></p>
-  <a href="/auth/logout">Logout</a>
+<main class="container mt-5">
+  <div class="card mx-auto shadow-lg" style="max-width: 600px">
+    <div class="card-body">
+      <h1 class="card-title text-center mb-4">Welcome, <%= user.username %></h1>
+      <p class="card-text"><strong>Email:</strong> <%= user.email %></p>
+      <div class="d-flex justify-content-between">
+        <a href="/todos/dashboard" class="btn btn-primary">Back to Dashboard</a>
+        <a href="/auth/logout" class="btn btn-danger">Logout</a>
+      </div>
+    </div>
+  </div>
 </main>
 <%- include("partials/footer"); %>
