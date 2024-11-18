@@ -17,6 +17,11 @@ const TodoSchema = new mongoose.Schema({
   dueDate: {
     type: Date, // Optional field for due dates
   },
+  priority: {
+    type: String,
+    enum: ["Low", "Medium", "High"],
+    default: "Low",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
