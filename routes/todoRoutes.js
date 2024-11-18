@@ -28,13 +28,14 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
 
 // Add Todo
 router.post("/add", isAuthenticated, async (req, res) => {
-  const { title } = req.body;
+  const { title, dueDate } = req.body;
 
   try {
     // Create the new todo
     await Todo.create({
       userId: req.session.userId, // Attach the logged-in user's ID
       title,
+      dueDate,
     });
 
     // Redirect back to the dashboard

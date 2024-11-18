@@ -6,7 +6,8 @@
     <% if (incompleteTodos && incompleteTodos.length > 0) { %> <%
     incompleteTodos.forEach((todo) => { %>
     <li>
-      <%= todo.title %>
+      <%= todo.title %> - Due: <%= todo.dueDate ?
+      todo.dueDate.toLocaleDateString() : "No due date" %>
       <form
         action="/todos/toggle/<%= todo._id %>"
         method="POST"
@@ -57,6 +58,7 @@
   <h3>Add a New Todo</h3>
   <form action="/todos/add" method="POST">
     <input type="text" name="title" placeholder="Enter todo" required />
+    <input type="date" name="dueDate" />
     <button type="submit">Add</button>
   </form>
 

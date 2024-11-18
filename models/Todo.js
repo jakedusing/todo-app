@@ -14,6 +14,9 @@ const TodoSchema = new mongoose.Schema({
     type: Boolean,
     default: false, // default to not complete
   },
+  dueDate: {
+    type: Date, // Optional field for due dates
+  },
   createdAt: {
     type: Date,
     default: Date.now,
