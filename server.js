@@ -22,6 +22,10 @@ app.use(
     cookie: { secure: false },
   })
 );
+app.use((req, res, next) => {
+  res.locals.user = req.session.userId ? { id: req.session.userId } : null;
+  next();
+});
 
 // Database connection
 mongoose
