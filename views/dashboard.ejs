@@ -13,8 +13,15 @@
       >
         <div>
           <strong><%= todo.title %></strong>
-          <strong><%= todo.title %></strong> - Due: <%= todo.dueDate ?
-          todo.dueDate.toLocaleDateString() : "No due date" %> - Priority:
+           - Due: 
+           <% if (todo.isOverdue) {%>
+            <span class="text-danger">Overdue: <%= todo.dueDate.toLocaleDateString() %></span>
+            <% } else if (todo.isToday) { %>
+              <span class="text-success">Today</span>
+              <% } else { %>
+                <%= todo.dueDate ? todo.dueDate.toLocaleDateString() : "No due date" %>
+                <% } %>
+          - Priority:
           <span 
           class="badge
           <%= todo.priority === "Low" ? 'bg-secondary' : todo.priority === "Medium" ? "bg-warning" : "bg-danger" %>">
