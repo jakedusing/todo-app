@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const TodoSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Schema.Types.ObjectId, // reference to a user
+    type: mongoose.Schema.Types.ObjectId, // reference to a user, for personal todos
     ref: "User", // reference the usermodel
     required: true,
   },
@@ -26,6 +26,8 @@ const TodoSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  groupId: { type: mongoose.Schema.Types.ObjectId, ref: "Group" }, // for group todos
+  assignee: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // for assigned todos
 });
 
 module.exports = mongoose.model("Todo", TodoSchema);

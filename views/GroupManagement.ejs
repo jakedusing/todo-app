@@ -1,0 +1,38 @@
+<%- include("partials/header"); %>
+
+<main class="container mt-5">
+  <h1>Manage Group: <%= group.name %></h1>
+  <ul class="list-group mb-4">
+    <% group.members.forEach(member => { %>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span><%= member.username %></span>
+      <form
+        action="/groups/<%= group._id %>/remove/<%= member._id %>"
+        method="POST"
+        class="d-inline"
+      >
+        <button class="btn btn-danger btn-sm">Remove</button>
+      </form>
+    </li>
+    <% }); %>
+  </ul>
+
+  <form action="/groups/<%= group._id %>/add" method="POST" class="row g-3">
+    <div class="col-md-9">
+      <input
+        type="text"
+        name="username"
+        class="form-control"
+        placeholder="Add member by username"
+        required
+      />
+    </div>
+    <div class="col-md-3">
+      <button type="submit" class="btn btn-primary w-100">Add Member</button>
+    </div>
+  </form>
+</main>
+
+<%- include("partials/footer"); %>

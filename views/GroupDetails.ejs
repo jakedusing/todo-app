@@ -1,0 +1,74 @@
+<%- include("partials/header"); %>
+
+<main class="container mt-5">
+  <h1>Group: <%= group.name %></h1>
+  <p>Members: <%= group.members.map(member => member.username).join(", ") %></p>
+
+  <section class="mb-5">
+    <h2>Group Todos</h2>
+    <ul class="list-group">
+      <% todos.forEach(todo => { %>
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <span>
+          <strong><%= todo.title %></strong>
+          <br />
+          Assigned to: <%= todo.assignee ? todo.assignee.username : "Unassigned"
+          %>
+        </span>
+        <div>
+          <% if (!todo.completed) { %>
+          <form
+            action="/todos/<%= todo._id %>/complete"
+            method="POST"
+            class="d-inline"
+          >
+            <button class="btn btn-success btn-sm">Mark Complete</button>
+          </form>
+          <% } %>
+          <form
+            action="/todos/<%= todo._id %>/delete"
+            method="POST"
+            class="d-inline"
+          >
+            <button class="btn btn-danger btn-sm">Delete</button>
+          </form>
+        </div>
+      </li>
+      <% }); %>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Add a New Todo</h3>
+    <form
+      action="/groups/<%= group._id %>/todos/add"
+      method="POST"
+      class="row g-3"
+    >
+      <div class="col-md-6">
+        <input
+          type="text"
+          name="title"
+          class="form-control"
+          placeholder="Enter todo"
+          required
+        />
+      </div>
+      <div class="col-md-3">
+        <select name="assignee" class="form-control">
+          <option value="">Unassigned</option>
+          <% group.members.forEach(member => { %>
+          <option value="<%= member._id %>"><%= member.username %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-primary w-100">Add Todo</button>
+      </div>
+    </form>
+  </section>
+</main>
+
+<%- include("partials/footer"); %>
