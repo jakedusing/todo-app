@@ -4,6 +4,42 @@ const User = require("../models/User");
 const isAuthenicated = require("../middleware/auth");
 const router = express.Router();
 
+// get all friends
+router.get("/", isAuthenicated, async (req, res) => {
+  try {
+    // Fetch accepted friendships
+    const friendships = await Friendship.find({
+      $or: [
+        { requester: req.session.userId, status: "accepted" },
+        { recipient: req.session.userId, status: "accepted" },
+      ],
+    }).populate("requester recipient", "username");
+
+    const friends = friendships.map((friendship) =>
+      friendship.requester._id.toString() === req.session.userId
+        ? friendship.recipient
+        : friendship.requester
+    );
+
+    // Fetch pending friend requests received
+    const pendingRequests = await Friendship.find({
+      recipient: req.session.userId,
+      status: "pending",
+    }).populate("requester", "username");
+
+    // Fetch pending friend requests sent
+    const sentRequests = await Friendship.find({
+      requester: req.session.userId,
+      status: "pending",
+    }).populate("recipient", "username");
+
+    res.render("FriendList", { friends, pendingRequests, sentRequests });
+  } catch (err) {
+    console.error("Error fetching friends:", err);
+    res.status(500).send("Server Error");
+  }
+});
+
 // Send a friend request
 router.post("/request", isAuthenicated, async (req, res) => {
   const { recipientUsername } = req.body;
@@ -59,31 +95,40 @@ router.post("/accept/:id", isAuthenicated, async (req, res) => {
   }
 });
 
-// get all friends
-router.get("/", isAuthenicated, async (req, res) => {
+// Cancel friend request
+router.post("/cancel/:id", isAuthenicated, async (req, res) => {
   try {
-    const friendships = await Friendship.find({
-      $or: [
-        { requester: req.session.userId, status: "accepted" },
-        { recipient: req.session.userId, status: "accepted" },
-      ],
-    }).populate("requester receipient", "username");
+    const friendship = await Friendship.findById(req.params.id);
 
-    const friends = friendships.map((friendship) =>
-      friendship.requester._id.toString() === req.session.userId
-        ? friendship.recipient
-        : friendship.requester
-    );
-
-    // Fetch pending friend requests
-    const pendingRequests = await Friendship.find({
-      recipient: req.session.userId,
-      status: "pending",
-    }).populate("requester", "username");
-
-    res.render("FriendList", { friends, pendingRequests });
+    if (
+      friendship &&
+      friendship.requester.toString() === req.session.userId &&
+      friendship.status === "pending"
+    ) {
+      await friendship.delete();
+      res.json({ message: "Friend request canceled" });
+    } else {
+      res.status(403).send("Unauthorized");
+    }
   } catch (err) {
-    console.error("Error fetching friends:", err);
+    console.error("Error canceling friend request:", err);
+    res.status(500).send("Server Error");
+  }
+});
+
+// View all users except the logged-in user
+router.get("/browse", isAuthenicated, async (req, res) => {
+  try {
+    const users = await User.find({ _id: { $ne: req.session.userId } });
+    const sentRequests = await Friendship.find({
+      requester: req.session.userId,
+      status: "pending",
+    }).populate("recipient", "username");
+    const sentIds = sentRequests.map((req) => req.recipient._id.toString());
+
+    res.render("BrowseUsers", { users, sentIds });
+  } catch (err) {
+    console.error("Error browsing users:", err);
     res.status(500).send("Server Error");
   }
 });

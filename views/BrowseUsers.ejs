@@ -1,0 +1,26 @@
+<%- include("partials/header"); %>
+<main class="container mt-5">
+  <h1>Browse Users</h1>
+  <ul class="list-group">
+    <% users.forEach(user => { %>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span><%= user.username %></span>
+      <% if (sentIds.includes(user._id.toString())) {%>
+      <button class="btn btn-secondary btn-sm" disabled>Request Sent</button>
+      <% } else { %>
+      <form action="/friends/request" method="POST" class="d-inline">
+        <input
+          type="hidden"
+          name="recipientUsername"
+          value="<%= user.username %>"
+        />
+        <button class="btn btn-primary btn-sm">Send Friend Request</button>
+      </form>
+      <% } %>
+    </li>
+    <% }); %>
+  </ul>
+</main>
+<%- include("partials/footer"); %>
