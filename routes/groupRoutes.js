@@ -91,9 +91,10 @@ router.post("/:id/todos/add", isAuthenticated, async (req, res) => {
       groupId: group._id,
       title,
       assignee: assignee || null,
+      userId: req.session.userId,
     });
 
-    res.redirect(`/groups/${group_id}`);
+    res.redirect(`/groups/${group._id}`);
   } catch (err) {
     console.error("Error adding todo:", err);
     res.status(500).send("Server Error");
