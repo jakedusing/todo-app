@@ -6,6 +6,7 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
 const todoRoutes = require("./routes/todoRoutes");
+const groupRoutes = require("./routes/groupRoutes");
 
 dontenv.config();
 const app = express();
@@ -36,6 +37,7 @@ mongoose
 // Routes
 app.use("/auth", authRoutes);
 app.use("/todos", todoRoutes);
+app.use("/groups", groupRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
