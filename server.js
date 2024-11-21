@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
 const todoRoutes = require("./routes/todoRoutes");
 const groupRoutes = require("./routes/groupRoutes");
+const friendshipRoutes = require("./routes/friendshipRoutes");
 
 dontenv.config();
 const app = express();
@@ -38,6 +39,7 @@ mongoose
 app.use("/auth", authRoutes);
 app.use("/todos", todoRoutes);
 app.use("/groups", groupRoutes);
+app.use("/friends", friendshipRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;

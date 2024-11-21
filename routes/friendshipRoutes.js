@@ -1,7 +1,7 @@
 const express = require("express");
 const Friendship = require("../models/Friendship");
 const User = require("../models/User");
-const isAuthenicated = required("../middleware/auth");
+const isAuthenicated = require("../middleware/auth");
 const router = express.Router();
 
 // Send a friend request
@@ -75,7 +75,13 @@ router.get("/", isAuthenicated, async (req, res) => {
         : friendship.requester
     );
 
-    res.json({ friends });
+    // Fetch pending friend requests
+    const pendingRequests = await Friendship.find({
+      recipient: req.session.userId,
+      status: "pending",
+    }).populate("requester", "username");
+
+    res.render("FriendList", { friends, pendingRequests });
   } catch (err) {
     console.error("Error fetching friends:", err);
     res.status(500).send("Server Error");

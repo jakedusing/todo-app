@@ -1,0 +1,28 @@
+<%- include("partials/header"); %>
+
+<main class="container mt-5">
+  <h1>My Friends</h1>
+
+  <h2>Pending Requests</h2>
+  <ul class="list-group mb-4">
+    <% pendingRequests.forEach(request => { %>
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span><%= request.requester.username %></span>
+      <form action="/friends/accept/<%= request._id %>" method="POST">
+        <button class="btn btn-success btn-sm">Accept</button>
+      </form>
+    </li>
+    <% }); %>
+  </ul>
+
+  <h2>Friends</h2>
+  <ul class="list-group">
+    <% friends.forEach(friend => { %>
+    <li class="list-group-item"><%= friend.username %></li>
+    <% }); %>
+  </ul>
+</main>
+
+<%- include("partials/footer"); %>

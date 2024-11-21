@@ -2,6 +2,7 @@ const express = require("express");
 const Group = require("../models/Group");
 const Todo = require("../models/Todo");
 const User = require("../models/User");
+const Friendship = require("../models/Friendship");
 const isAuthenticated = require("../middleware/auth");
 const router = express.Router();
 
@@ -9,7 +10,20 @@ const router = express.Router();
 router.get("/", isAuthenticated, async (req, res) => {
   try {
     const groups = await Group.find({ members: req.session.userId });
-    res.render("GroupList", { title: "My Groups", groups });
+    const friendships = await Friendship.find({
+      $or: [
+        { requester: req.session.userId, status: "accepted" },
+        { recipient: req.session.userId, status: "accepted" },
+      ],
+    }).populate("requester recipient", "username");
+
+    const friends = friendships.map((friendship) =>
+      friendship.requester._id.toString() === req.session.userId
+        ? friendship.recipient
+        : friendship.requester
+    );
+
+    res.render("GroupList", { title: "My Groups", groups, friends });
   } catch (err) {
     console.error("Error fetching groups:", err);
     res.status(500).send("Server Error");

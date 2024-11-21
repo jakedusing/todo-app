@@ -63,16 +63,18 @@
           />
         </div>
         <div class="mb-3">
-          <label for="groupMembers" class="form-label"
-            >Add Members (Comma-separted Usernames)</label
-          >
-          <input
-            type="text"
-            class="form-control"
+          <label for="groupMembers" class="form-label">Select Members</label>
+          <select
             id="groupMembers"
             name="members"
-            placeholder="e.g., john, jane, doe"
-          />
+            class="form-control"
+            multiple
+            required
+          >
+            <% friends.forEach(friend => { %>
+            <option value="<%= friend._id %>"><%= friend.username %></option>
+            <% }); %>
+          </select>
         </div>
       </div>
       <div class="modal-footer">
