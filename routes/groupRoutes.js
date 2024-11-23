@@ -69,7 +69,10 @@ router.get("/:id", isAuthenticated, async (req, res) => {
       return res.status(403).send("Unauthorized");
     }
 
-    const todos = await Todo.find({ groupId: group._id });
+    const todos = await Todo.find({ groupId: group._id }).populate(
+      "assignee",
+      "username"
+    );
     res.render("GroupDetails", { group, todos });
   } catch (err) {
     console.error("Error fetching group details:", err);
