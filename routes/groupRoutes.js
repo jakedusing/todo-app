@@ -82,12 +82,19 @@ router.get("/:id", isAuthenticated, async (req, res) => {
 
 // Add a todo to a group
 router.post("/:id/todos/add", isAuthenticated, async (req, res) => {
-  const { title, assignee } = req.body;
+  const { title, assignee, dueDate, priority } = req.body;
 
   try {
     const group = await Group.findById(req.params.id);
+
+    // Ensure user is a group member
     if (!group.members.some((member) => member.equals(req.session.userId))) {
       return res.status(403).send("Unauthorized");
+    }
+
+    // Ensure assignee is a valid group member
+    if (!group.members.some((member) => member.equals(assignee))) {
+      return res.status(400).send("Assignee must be a group member");
     }
 
     const todo = await Todo.create({
@@ -95,6 +102,8 @@ router.post("/:id/todos/add", isAuthenticated, async (req, res) => {
       title,
       assignee: assignee || null,
       userId: req.session.userId,
+      dueDate: dueDate || null,
+      priority: priority || "Low", // default to low if not provided
     });
 
     res.redirect(`/groups/${group._id}`);

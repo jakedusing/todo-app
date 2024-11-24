@@ -7,3 +7,18 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+.low-priority {
+  color: green;
+  font-weight: bold;
+}
+
+.medium-priority {
+  color: orange;
+  font-weight: bold;
+}
+
+.high-priority {
+  color: red;
+  font-weight: bold;
+}

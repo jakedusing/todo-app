@@ -14,8 +14,15 @@
         <span>
           <strong><%= todo.title %></strong>
           <br />
-          Assigned to: <%= todo.assignee ? todo.assignee.username : "Unassigned"
-          %>
+          Assigned to: <%= todo.assignee.username %>
+          <br />
+          Due Date: <%= todo.dueDate ? new
+          Date(todo.dueDate).toLocaleDateString() : "No due date" %>
+          <br />
+          Priority :
+          <span class="<%= todo.priority.toLowerCase() %>-priority">
+            <%= todo.priority %>
+          </span>
         </span>
         <div>
           <% if (!todo.completed) { %>
@@ -58,10 +65,16 @@
       </div>
       <div class="col-md-3">
         <select name="assignee" class="form-control">
-          <option value="">Unassigned</option>
           <% group.members.forEach(member => { %>
           <option value="<%= member._id %>"><%= member.username %></option>
           <% }); %>
+        </select>
+        <input type="date" name="dueDate" />
+
+        <select name="priority">
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
         </select>
       </div>
       <div class="col-md-3">
