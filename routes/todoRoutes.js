@@ -15,6 +15,14 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
       groupId: null, // only personal todos, no group association
     });
 
+    // seperate personal todos into completed and incomplete
+    const incompleteSelfCreatedTodos = selfCreatedTodos.filter(
+      (todo) => !todo.completed
+    );
+    const completedSelfCreatedTodos = selfCreatedTodos.filter(
+      (todo) => todo.completed
+    );
+
     // Todos assigned to the user in groups
     const assignedTodos = await Todo.find({
       assignee: req.session.userId,
@@ -36,6 +44,8 @@ router.get("/dashboard", isAuthenticated, async (req, res) => {
       selfCreatedTodos,
       incompleteAssignedTodos,
       completedAssignedTodos,
+      incompleteSelfCreatedTodos,
+      completedSelfCreatedTodos,
     });
   } catch (err) {
     console.error("Error fetching todos:", err);
@@ -54,12 +64,13 @@ router.post("/add", isAuthenticated, async (req, res) => {
       title,
       dueDate,
       priority,
+      groupId: null, // Personal todos have no group association
     });
 
     // Redirect back to the dashboard
     res.redirect("/todos/dashboard");
   } catch (err) {
-    console.error("Error adding todo:", err);
+    console.error("Error adding personal todo:", err);
     res.status(500).send("Server Error");
   }
 });
