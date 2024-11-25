@@ -100,7 +100,7 @@ router.post("/:id/todos/add", isAuthenticated, async (req, res) => {
     const todo = await Todo.create({
       groupId: group._id,
       title,
-      assignee: assignee || null,
+      assignee: assignee,
       userId: req.session.userId,
       dueDate: dueDate || null,
       priority: priority || "Low", // default to low if not provided

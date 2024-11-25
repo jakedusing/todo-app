@@ -8,17 +8,34 @@ const router = express.Router();
 router.get("/dashboard", isAuthenticated, async (req, res) => {
   try {
     const user = await User.findById(req.session.userId);
-    const todos = await Todo.find({ userId: req.session.userId });
+
+    // Todos created by the user
+    const selfCreatedTodos = await Todo.find({
+      userId: req.session.userId,
+      groupId: null, // only personal todos, no group association
+    });
+
+    // Todos assigned to the user in groups
+    const assignedTodos = await Todo.find({
+      assignee: req.session.userId,
+    })
+      .populate("groupId", "name")
+      .populate("userId", "username");
 
     // Separate completed and incomplete todos
-    const incompleteTodos = todos.filter((todo) => !todo.completed);
-    const completedTodos = todos.filter((todo) => todo.completed);
+    const incompleteAssignedTodos = assignedTodos.filter(
+      (todo) => !todo.completed
+    );
+    const completedAssignedTodos = assignedTodos.filter(
+      (todo) => todo.completed
+    );
 
     res.render("dashboard", {
       title: "Dashboard",
       username: user.username, // pass the username to the view
-      incompleteTodos,
-      completedTodos,
+      selfCreatedTodos,
+      incompleteAssignedTodos,
+      completedAssignedTodos,
     });
   } catch (err) {
     console.error("Error fetching todos:", err);
