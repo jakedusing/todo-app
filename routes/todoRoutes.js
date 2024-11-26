@@ -104,8 +104,14 @@ router.post("/toggle/:id", isAuthenticated, async (req, res) => {
     todo.completed = !todo.completed;
     await todo.save();
 
-    //Redirect back to dashboard
-    res.redirect("/todos/dashboard");
+    //Redirect based on Todo type
+    if (todo.groupId) {
+      // Redirect to thge group details page if the todo is part of a group
+      res.redirect(`/groups/${todo.groupId._id}`);
+    } else {
+      // Redirect to the dashboard for personal todos
+      res.redirect("/todos/dashboard");
+    }
   } catch (err) {
     console.error("Error toggling todo:", err);
     res.status(500).send("Server Error");

@@ -25,7 +25,7 @@
               - Priority: <span class="badge <%= todo.priority === "High" ? "bg-danger" : todo.priority === "Medium" ? "bg-warning" : "bg-secondary"%>"><%= todo.priority %></span>
               <br /> Assigned to: <%= todo.assignee.username %>
             </div>
-            <form action="/todos/toggled/<%= todo._id %>" method="POST">
+            <form action="/todos/toggle/<%= todo._id %>" method="POST">
               <button type="submit" class="btn btn-success btn-sm">Mark Complete</button>
             </form>
           </li>
