@@ -60,7 +60,7 @@
     <h2>Your Completed Personal Todos</h2>
     <% if (completedSelfCreatedTodos && completedSelfCreatedTodos.length > 0) { %>
       <ul class="list-group">
-        <% completedSelfCreatedTodos.forEach((todo) => { %> <!-- Added the arrow function syntax -->
+        <% completedSelfCreatedTodos.forEach((todo) => { %> 
           <li class="list-group-item d-flex justify-content-between align-items-center">
             <div>
               <s><strong><%= todo.title %></strong></s>
