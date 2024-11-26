@@ -1,86 +1,61 @@
 <%- include("partials/header"); %>
 
 <main class="container mt-5">
-  <h1>Group: <%= group.name %></h1>
-  <p>Members: <%= group.members.map(member => member.username).join(", ") %></p>
+  <h1><%= group.name %></h1>
+  <p>Group Owner: <strong><%= group.owner.username %></strong></p>
+  <p>Members:</p>
+  <ul>
+    <% group.members.forEach((member) => { %>
+    <li><%= member.username %></li>
+    <% }); %>
+  </ul>
 
-  <section class="mb-5">
+  <section class="mt-4">
     <h2>Group Todos</h2>
-    <ul class="list-group">
-      <% todos.forEach(todo => { %>
-      <li
-        class="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <span>
-          <strong><%= todo.title %></strong>
-          <br />
-          Assigned to: <%= todo.assignee.username %>
-          <br />
-          Due Date: <%= todo.dueDate ? new
-          Date(todo.dueDate).toLocaleDateString() : "No due date" %>
-          <br />
-          Priority :
-          <span class="<%= todo.priority.toLowerCase() %>-priority">
-            <%= todo.priority %>
-          </span>
-        </span>
-        <div>
-          <% if (!todo.completed) { %>
-          <form
-            action="/todos/<%= todo._id %>/complete"
-            method="POST"
-            class="d-inline"
-          >
-            <button class="btn btn-success btn-sm">Mark Complete</button>
-          </form>
-          <% } %>
-          <form
-            action="/todos/<%= todo._id %>/delete"
-            method="POST"
-            class="d-inline"
-          >
-            <button class="btn btn-danger btn-sm">Delete</button>
-          </form>
-        </div>
-      </li>
-      <% }); %>
-    </ul>
-  </section>
 
-  <section>
-    <h3>Add a New Todo</h3>
-    <form
-      action="/groups/<%= group._id %>/todos/add"
-      method="POST"
-      class="row g-3"
-    >
-      <div class="col-md-6">
-        <input
-          type="text"
-          name="title"
-          class="form-control"
-          placeholder="Enter todo"
-          required
-        />
-      </div>
-      <div class="col-md-3">
-        <select name="assignee" class="form-control">
-          <% group.members.forEach(member => { %>
-          <option value="<%= member._id %>"><%= member.username %></option>
+    <!-- Incomplete Todos -->
+     <h3>Incomplete Todos</h3>
+     <% if (todos.some(todo => !todo.completed)) {%>
+      <ul class="list-group">
+        <% todos.filter(todo => !todo.completed).forEach((todo) => { %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong><%= todo.title %></strong>
+              - Due: <%= todo.dueDate ? todo.dueDate.toLocaleDateString() : "No due date" %>
+              - Priority: <span class="badge <%= todo.priority === "High" ? "bg-danger" : todo.priority === "Medium" ? "bg-warning" : "bg-secondary"%>"><%= todo.priority %></span>
+              <br /> Assigned to: <%= todo.assignee.username %>
+            </div>
+            <form action="/todos/toggled/<%= todo._id %>" method="POST">
+              <button type="submit" class="btn btn-success btn-sm">Mark Complete</button>
+            </form>
+          </li>
           <% }); %>
-        </select>
-        <input type="date" name="dueDate" />
+      </ul>
+      <% } else { %>
+        <p class="text-muted">No incomplete todos!</p>
+        <% } %>
 
-        <select name="priority">
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <button type="submit" class="btn btn-primary w-100">Add Todo</button>
-      </div>
-    </form>
+        <!-- Completed Todos -->
+         <h3 class="mt-4">Completed Todos</h3>
+         <% if (todos.some(todo => todo.completed)) {%>
+          <ul class="list-group">
+            <% todos.filter(todo => todo.completed).forEach((todo) => {%>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                  <s><strong><%= todo.title %></strong></s>
+                  - Due: <%= todo.dueDate ? todo.dueDate.toLocaleDateString() : "No due date" %>
+                  - Priority: <span class="badge <%= todo.priority === "High" ? "bg-danger" : todo.priority === "Medium" ? "bg-warning" : "bg-secondary"%>"><%= todo.priority %></span>
+                  <br /> Assigned to: <%= todo.assignee.username %>
+                </div>
+                <form action="/todos/toggle/<%= todo._id %>" method="POST">
+                  <button type="submit" class="btn btn-secondary btn-sm">Mark Incomplete</button>
+                </form>
+              </li>
+              <% }); %>
+          </ul>
+          <% } else { %>
+            <p class="text-muted">No completed todos!</p>
+            <% } %>
   </section>
 </main>
 

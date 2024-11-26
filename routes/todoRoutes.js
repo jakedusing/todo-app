@@ -87,7 +87,9 @@ router.post("/toggle/:id", isAuthenticated, async (req, res) => {
     // Check authorization
     if (todo.groupId) {
       // Group todo: check  if the user is the assignee or a group member
-      const isGroupMember = todo.groupId.members.includes(req.session.userId);
+      const isGroupMember = todo.groupId.members.some((member) =>
+        member.equals(req.session.userId)
+      );
       if (!isGroupMember || !todo.assignee.equals(req.session.userId)) {
         return res.status(403).send("unauthorized");
       }
