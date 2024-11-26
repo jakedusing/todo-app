@@ -79,14 +79,23 @@ router.post("/add", isAuthenticated, async (req, res) => {
 router.post("/toggle/:id", isAuthenticated, async (req, res) => {
   try {
     // Find the todo by ID and toggle its "completed" status
-    const todo = await Todo.findById(req.params.id);
+    const todo = await Todo.findById(req.params.id).populate("groupId");
     if (!todo) {
       return res.status(404).send("Todo not found");
     }
 
-    // Ensure the users own the todo
-    if (todo.userId.toString() !== req.session.userId) {
-      return res.status(403).send("Unauthorized");
+    // Check authorization
+    if (todo.groupId) {
+      // Group todo: check  if the user is the assignee or a group member
+      const isGroupMember = todo.groupId.members.includes(req.session.userId);
+      if (!isGroupMember || !todo.assignee.equals(req.session.userId)) {
+        return res.status(403).send("unauthorized");
+      }
+    } else {
+      // Personal todo: ensure the user owns it
+      if (todo.userId.toString() !== req.session.userId) {
+        return res.status(403).send("Unauthorized");
+      }
     }
 
     //Toggle compelted status
