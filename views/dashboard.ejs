@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/css/dashboard.css">
+
 <%- include("partials/header") %>
 <main class="container mt-5">
   <!-- Flash Messages-->
@@ -39,33 +41,47 @@
 
   <!-- Personal Incomplete Todos // Not assigned by others from a group -->
   <section class="mb-5">
-    <h2>Your Incomplete Todos</h2>
+    <h2 class="text-center mb-4">Your Incomplete Todos</h2>
     <% if (incompleteSelfCreatedTodos && incompleteSelfCreatedTodos.length > 0) { %>
-      <ul class="list-group">
-        <% incompleteSelfCreatedTodos.forEach((todo) => { %> <!-- Added the arrow function syntax -->
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-              <strong><%= todo.title %></strong>
-              - Due: <%= todo.dueDate ? todo.dueDate.toLocaleDateString() : "No due date" %>
-              - Priority: <span class="badge <%= todo.priority === "High" ? "bg-danger" : todo.priority === "Medium" ? "bg-warning" : "bg-secondary" %>">
-                <%= todo.priority %>
-              </span>
+      <div class="row justify-content-center">
+        <% incompleteSelfCreatedTodos.forEach((todo) => { %>
+          <div class="col-12 col-md-8 mb-3">
+            <div class="card shadow-sm">
+              <div class="card-body d-flex justify-content-between align-items-center">
+                <!-- Left Section: Todo Details -->
+                <div>
+                  <h5 class="card-title mb-2"><%= todo.title %></h5>
+                  <p class="card-text mb-1">
+                    <strong>Due:</strong> <%= todo.dueDate ? todo.dueDate.toLocaleDateString() : "No due date" %>
+                  </p>
+                  <p class="card-text">
+                    <strong>Priority:</strong>
+                    <span class="badge <%= todo.priority === "High" ? "bg-danger" : todo.priority === "Medium" ? "bg-warning text-dark" : "bg-secondary" %>">
+                      <%= todo.priority %>
+                    </span>
+                  </p>
+                </div>
+                <!-- Right Section: Buttons -->
+                <div class="d-flex flex-column">
+                  <form action="/todos/toggle/<%= todo._id %>" method="POST" class="mb-2">
+                    <button type="submit" class="btn btn-success btn-sm">Mark Complete</button>
+                  </form>
+                  <form action="/todos/delete/<%= todo._id %>" method="POST">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                </div>
+              </div>
             </div>
-            <div>
-              <form action="/todos/toggle/<%= todo._id %>" method="POST" class="d-inline">
-                <button type="submit" class="btn btn-success btn-sm">Mark Complete</button>
-              </form>
-              <form action="/todos/delete/<%= todo._id %>" method="POST" class="d-inline">
-                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-              </form>
-            </div>
-          </li>
-        <% }); %> <!-- Closing the forEach correctly -->
-      </ul>
+          </div>
+        <% }); %>
+      </div>
     <% } else { %>
-      <p class="text-muted">No incomplete personal todos!</p>
+      <p class="text-muted text-center">No incomplete personal todos!</p>
     <% } %>
   </section>
+  
+  
+  
   
   <!-- Personal Completed Todos -->
   <section class="mb-5">
