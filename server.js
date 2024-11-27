@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const dontenv = require("dotenv");
 const path = require("path");
 const session = require("express-session");
+const flash = require("connect-flash");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/authRoutes");
 const todoRoutes = require("./routes/todoRoutes");
@@ -26,6 +27,14 @@ app.use(
 );
 app.use((req, res, next) => {
   res.locals.user = req.session.userId ? { id: req.session.userId } : null;
+  next();
+});
+app.use(flash());
+
+// Middleware to make flash messages available in templates
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash("success");
+  res.locals.error_msg = req.flash("error");
   next();
 });
 

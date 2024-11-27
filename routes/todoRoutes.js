@@ -68,10 +68,12 @@ router.post("/add", isAuthenticated, async (req, res) => {
     });
 
     // Redirect back to the dashboard
+    req.flash("success", "Todo added successfully!");
     res.redirect("/todos/dashboard");
   } catch (err) {
-    console.error("Error adding personal todo:", err);
-    res.status(500).send("Server Error");
+    console.error("Error fetching todos:", err);
+    req.flash("error", "An error occurred while adding the todo.");
+    res.redirect("/todos/dashboard");
   }
 });
 
