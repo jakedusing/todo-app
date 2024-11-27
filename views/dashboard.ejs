@@ -20,25 +20,21 @@
 
   <!-- Form to add a new personal todo -->
    <section class="mb-5">
-    <h3>Add a New Personal Todo</h3>
-    <form action="/todos/add" method="POST" class="row g-3">
-      <div class="col-md-6">
-        <input type="text" name="title" class="form-control" placeholder="Enter todo" required />
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 40vh;">
+      <div class="w-100" style="max-width: 500px;">
+        <h3 class="text-center mb-4">Add a New Personal Todo</h3>
+        <form action="/todos/add" method="POST" class="d-flex flex-column gap-3">
+          <input type="text" name="title" class="form-control" placeholder="Enter todo" required />
+          <input type="date" name="dueDate" class="form-control" />
+          <select name="priority" class="form-select">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+          <button type="submit" class="btn btn-primary mt-3">Add Todo</button>
+        </form>
       </div>
-      <div class="col-md-3">
-        <input type="date" name="dueDate" class="form-control" />
-      </div>
-      <div class="col-md-2">
-        <select name="priority" class="form-select">
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
-        </select>
-      </div>
-      <div class="col-md-1">
-        <button type="submit" class="btn btn-primary">Add</button>
-      </div>
-    </form>
+    </div>
    </section>
 
   <!-- Personal Incomplete Todos // Not assigned by others from a group -->
