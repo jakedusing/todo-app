@@ -9,7 +9,37 @@
     <li><%= member.username %></li>
     <% }); %>
   </ul>
-
+  <section class="mb-5">
+    <h3>Add a New Todo for <%= group.name %></h3>
+    <form action="/groups/<%= group._id %>/todos/add" method="POST" class="row g-3">
+      <div class="col-12">
+        <input type="text" name="title" class="form-control" placeholder="Enter Todo" required>
+      </div>
+      <div class="col-md-6">
+        <input type="date" name="dueDate" class="form-control">
+      </div>
+      <div class="col-md-6">
+        <select name="priority" class="form-select">
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label for="assignee" class="form-label">Assign to</label>
+        <select name="assignee" id="assignee" class="form-select">
+          <% group.members.forEach((member) => {%>
+            <option value="<%= member._id %>">
+              <%= member.username || "User " + member._id %>
+            </option>
+            <% }); %>
+        </select>
+      </div>
+      <div class="col-12 text-end">
+        <button type="submit" class="btn btn-primary">Add Todo</button>
+      </div>
+    </form>
+  </section>
   <section class="mt-4">
     <h2>Group Todos</h2>
 

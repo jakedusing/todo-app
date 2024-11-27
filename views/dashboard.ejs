@@ -40,7 +40,7 @@
    </section>
 
   <!-- Personal Incomplete Todos // Not assigned by others from a group -->
-  <section class="mb-5">
+  <section class="todo-section mb-5">
     <h2 class="text-center mb-4">Your Incomplete Todos</h2>
     <% if (incompleteSelfCreatedTodos && incompleteSelfCreatedTodos.length > 0) { %>
       <div class="row justify-content-center">
@@ -84,31 +84,36 @@
   
   
   <!-- Personal Completed Todos -->
-  <section class="mb-5">
-    <h2>Your Completed Personal Todos</h2>
-    <% if (completedSelfCreatedTodos && completedSelfCreatedTodos.length > 0) { %>
-      <ul class="list-group">
-        <% completedSelfCreatedTodos.forEach((todo) => { %> 
-          <li class="list-group-item d-flex justify-content-between align-items-center">
-            <div>
-              <s><strong><%= todo.title %></strong></s>
-              - Completed on: <%= todo.updatedAt ? todo.updatedAt.toLocaleDateString() : "Unknown" %>
-            </div>
-            <div>
-              <form action="/todos/toggle/<%= todo._id %>" method="POST" class="d-inline">
-                <button type="submit" class="btn btn-warning btn-sm">Mark Incomplete</button>
-              </form>
-              <form action="/todos/delete/<%= todo._id %>" method="POST" class="d-inline">
-                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-              </form>
-            </div>
-          </li>
-        <% }); %>
-      </ul>
-    <% } else { %>
-      <p class="text-muted">No completed personal todos!</p>
-    <% } %>
-  </section>
+<section class="todo-section mb-5">
+  <h2 class="text-center">Your Completed Personal Todos</h2>
+  <% if (completedSelfCreatedTodos && completedSelfCreatedTodos.length > 0) { %>
+    <ul class="list-group">
+      <% completedSelfCreatedTodos.forEach((todo) => { %>
+        <li class="list-group-item d-flex align-items-center completed-todo">
+          <div class="todo-info">
+            <s>
+              <strong><%= todo.title %></strong>
+            </s>
+            <p class="text-muted mb-0">
+              Completed on: <%= todo.updatedAt ? todo.updatedAt.toLocaleDateString() : "Unknown" %>
+            </p>
+          </div>
+          <div class="todo-actions">
+            <form action="/todos/toggle/<%= todo._id %>" method="POST" class="mb-2">
+              <button type="submit" class="btn btn-warning">Mark Incomplete</button>
+            </form>
+            <form action="/todos/delete/<%= todo._id %>" method="POST">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
+  <% } else { %>
+    <p class="text-center text-muted">No completed personal todos!</p>
+  <% } %>
+</section>
+
 
    <!-- Section for Assigned Todos -->
     <section class="mb-5">

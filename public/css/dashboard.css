@@ -23,3 +23,60 @@
 .card .btn + .btn {
   margin-top: 0.5rem;
 }
+
+.todo-section {
+  max-width: 700px; /* Increased width to ensure consistency */
+  margin: 0 auto; /* Centers the section */
+  background-color: #f8f9fa; /* Optional light background */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.completed-todos-section {
+  max-width: 600px; /* Matches the width of the incomplete todos */
+  margin: 0 auto; /* Center the section horizontally */
+  background-color: #f8f9fa; /* Light background for differentiation */
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.completed-todos-section h2 {
+  color: #6c757d; /* Muted color for completed todos */
+  font-size: 1.75rem;
+}
+
+.completed-todo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.completed-todo .todo-info {
+  max-width: 70%; /* Constrain width to avoid overlap */
+}
+
+.completed-todo .todo-info strong {
+  color: #343a40;
+}
+
+.completed-todo .todo-info s {
+  color: #868e96; /* Strike-through muted text for completed tasks */
+}
+
+.completed-todo .todo-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.completed-todo button {
+  width: 120px; /* Consistent button width */
+}
