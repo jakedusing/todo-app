@@ -26,7 +26,8 @@ router.get("/", isAuthenticated, async (req, res) => {
     res.render("GroupList", { title: "My Groups", groups, friends });
   } catch (err) {
     console.error("Error fetching groups:", err);
-    res.status(500).send("Server Error");
+    req.flash("error", "Could not load groups.  Please try again later.");
+    res.redirect("/dashboard");
   }
 });
 
@@ -51,18 +52,21 @@ router.post("/create", isAuthenticated, async (req, res) => {
     });
 
     await group.save();
-
+    req.flash("success", `Group "${name}" created successfully!`);
     res.redirect("/groups");
   } catch (err) {
     console.error("Error creating group:", err);
-    res.status(500).send("Server Error");
+    req.flash("error", "Could not create group. Please try again.");
+    res.redirect("/groups");
   }
 });
 
 // Get group details
 router.get("/:id", isAuthenticated, async (req, res) => {
   try {
-    const group = await Group.findById(req.params.id).populate("members");
+    const group = await Group.findById(req.params.id)
+      .populate("members")
+      .populate("owner"); // populate the owner field
     if (
       !group.members.some((member) => member._id.equals(req.session.userId))
     ) {
@@ -89,12 +93,14 @@ router.post("/:id/todos/add", isAuthenticated, async (req, res) => {
 
     // Ensure user is a group member
     if (!group.members.some((member) => member.equals(req.session.userId))) {
-      return res.status(403).send("Unauthorized");
+      req.flash("error", "You are not authorized to add todos to this group.");
+      return res.redirect("/groups");
     }
 
     // Ensure assignee is a valid group member
     if (!group.members.some((member) => member.equals(assignee))) {
-      return res.status(400).send("Assignee must be a group member");
+      req.flash("error", "The assignee must be a member of this group.");
+      return res.redirect(`/groups/${group._id}`);
     }
 
     const todo = await Todo.create({
@@ -106,10 +112,12 @@ router.post("/:id/todos/add", isAuthenticated, async (req, res) => {
       priority: priority || "Low", // default to low if not provided
     });
 
+    req.flash("success", "Todo added successfully!");
     res.redirect(`/groups/${group._id}`);
   } catch (err) {
     console.error("Error adding todo:", err);
-    res.status(500).send("Server Error");
+    req.flash("error", "Could not add the todo. Please try again.");
+    res.redirect(`/groups/${req.params.id}`);
   }
 });
 
@@ -139,23 +147,29 @@ router.post("/:id/add", isAuthenticated, async (req, res) => {
 
     // Only the owner can add members
     if (group.owner.toString() !== req.session.userId) {
-      return res.status(403).send("Unauthorized");
+      req.flash("error", "Only the group owner can add members");
+      return res.redirect(`/groups/${group._id}/manage`);
     }
 
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(404).send("User not found");
+      req.flash("error", `User "${username}" not found.`);
+      return res.redirect(`/groups/${group._id}/manage`);
     }
 
     if (!group.members.includes(user._id)) {
       group.members.push(user._id);
       await group.save();
+      req.flash("success", `User "${username}" added to the group!`);
+    } else {
+      req.flash("info", `User "${username}" is already in the group.`);
     }
 
     res.redirect(`/groups/${group._id}/manage`);
   } catch (err) {
     console.error("Error adding member:", err);
-    res.status(500).send("Server Error");
+    req.flash("error", "Could not add the member. Please try again.");
+    res.redirect(`/groups/${req.params.id}/manage`);
   }
 });
 
@@ -166,7 +180,8 @@ router.post("/:id/remove/:memberId", isAuthenticated, async (req, res) => {
 
     // Only the owner can remove members
     if (group.owner.toString() !== req.session.userId) {
-      return res.status(403).send("Unauthorized");
+      req.flash("error", "Only the group owner can remove members");
+      return res.redirect(`/groups/${group._id}/manage`);
     }
 
     group.members = group.members.filter(
@@ -174,10 +189,12 @@ router.post("/:id/remove/:memberId", isAuthenticated, async (req, res) => {
     );
     await group.save();
 
+    req.flash("success", "Member removed from the group.");
     res.redirect(`/groups/${group._id}/manage`);
   } catch (err) {
     console.error("Error removing member:", err);
-    res.status(500).send("Server Error");
+    req.flash("error", "Could not remove the member. Please try again.");
+    res.redirect(`/groups/${req.params.id}/manage`);
   }
 });
 

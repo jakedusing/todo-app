@@ -123,6 +123,7 @@ router.post("/toggle/:id", isAuthenticated, async (req, res) => {
 // Delete Todo
 router.post("/delete/:id", isAuthenticated, async (req, res) => {
   await Todo.findByIdAndDelete(req.params.id);
+  req.flash("success", "Todo successfully deleted!");
   res.redirect("/todos/dashboard");
 });
 
