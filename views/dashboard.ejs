@@ -116,23 +116,31 @@
 
 
    <!-- Section for Assigned Todos -->
-    <section class="mb-5">
+    <section class="todo-section mb-5">
       <h2>Group Todos Assigned to You</h2>
-      <% if (incompleteAssignedTodos.length > 0 || completedAssignedTodos.length > 0) { %>
-        <h3>Incomplete Todos</h3>
-        <% if (incompleteAssignedTodos.length > 0) {%>
-          <ul class="list-group">
-            <% incompleteAssignedTodos.forEach((todo) => { %>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
+
+      <% if (incompleteAssignedTodos.length > 0 || completedAssignedTodos.length > 0) {%>
+
+        <!-- Incomplete Todos -->
+         <h3>Incomplete Todos</h3>
+         <% if (incompleteAssignedTodos.length > 0) {%>
+          <ul class="todo-list">
+            <% incompleteAssignedTodos.forEach((todo) => {%>
+              <li class="todo-item">
+                <div class="todo-info">
                   <strong><%= todo.title %></strong>
-                  - Due: <%= todo.dueDate ? todo.dueDate.toLocaleDateString() : "No due date" %>
-                  - Priority: <span class="badge <%= todo.priority === "High" ? "bg-danger" : todo.priority === "Medium" ? "bg-warning" : "bg-secondary"%>"><%= todo.priority %></span>
-                  <br /> Group: <%= todo.groupId.name %>
+                  <span>- Due: <%= todo.dueDate ? todo.dueDate.toLocaleDateString() : "No due date" %></span>
+                  <span class="badge <%= todo.priority === "High" ? "bg-danger" : todo.priority === "Medium" ? "bg-warning text-dark" : "bg-secondary" %>">
+                    <%= todo.priority %>
+                  </span>
+                  <br >
+                  <span>Group: <%= todo.groupId.name %></span>
                 </div>
-                <form action="/todos/toggle/<%= todo._id %>" method="POST" class="d-inline">
-                  <button type="submit" class="btn btn-success btn-sm">Mark Complete</button>
-                </form>
+                <div class="todo-actions">
+                  <form action="/todos/toggle/<%= todo._id %>" method="POST">
+                    <button type="submit" class="btn btn-success btn-sm">Mark Complete</button>
+                  </form>
+                </div>
               </li>
               <% }); %>
           </ul>
@@ -140,31 +148,35 @@
             <p class="text-muted">No incomplete todos assigned to you!</p>
             <% } %>
 
-            <h3>Completed Todos</h3>
-            <% if (completedAssignedTodos.length > 0) {%>
-              <ul class="list-group">
+            <!-- Completed Todos -->
+             <h3>Completed Todos</h3>
+             <% if (completedAssignedTodos.length > 0) { %>
+              <ul class="todo-list">
                 <% completedAssignedTodos.forEach((todo) => { %>
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div>
+                  <li class="todo-item completed-todo">
+                    <div class="todo-info">
                       <s><strong><%= todo.title %></strong></s>
-                      - Due: <%= todo.dueDate ? todo.dueDate.toLocaleDateString() : "No due date" %>
-                      - Priority: <span class="badge <%= todo.priority === "High" ? "bg-danger" : todo.priority === "Medium" ? "bg-warning" : "bg-secondary"%>"><%= todo.priority %></span>
+                      <span>- Due: <%= todo.dueDate ? todo.dueDate.toLocaleDateString() : "No due date." %></span>
                       <span class="badge bg-success">Completed</span>
-                      <br />
-                      <% if (todo.groupId) {%>
-                      - Group: <%= todo.groupId.name %>
+                      <br>
+                      <span>Group: <%= todo.groupId.name %></span>
                     </div>
+                    <div class="todo-actions">
                     <a href="/groups/<%= todo.groupId._id %>" class="btn btn-primary btn-sm">View Group</a>
-                    <% } else { %>
-                      - No group assigned.
-                      <% } %>
+                    <form action="/todos/toggle/<%= todo._id %>" method="POST">
+                      <button type="submit" class="btn btn-warning btn-sm">Mark Incomplete</button>
+                    </form>
+                  </div>
                   </li>
                   <% }); %>
               </ul>
-                  <% } else { %>
-                    <p class="text-muted">No completed todos assigned to you!</p>
-                    <% } %>
-                    <% } %>
+              <% } else { %>
+                <p class="text-muted">No completed todos assigned to you!</p>
+                <% } %>
+
+                <% } else { %>
+                  <p class="text-muted">No group todos assigned to you yet!</p>
+                  <% } %>
     </section>
 
   <a href="/auth/logout">Logout</a>

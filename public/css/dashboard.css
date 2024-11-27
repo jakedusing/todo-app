@@ -33,6 +33,63 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.todo-list {
+  padding: 0;
+  list-style: none;
+  margin: 15px 0;
+}
+
+.todo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  padding: 15px;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  background-color: #ffffff;
+}
+
+.todo-item .todo-info {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.todo-item .todo-info strong {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #212529;
+}
+
+.todo-item .todo-info .badge {
+  font-size: 0.85rem;
+  margin-left: 5px;
+}
+
+.todo-item .todo-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.todo-item .todo-actions button {
+  width: 140px;
+  font-size: 0.9rem;
+}
+
+.completed-todo .badge {
+  background-color: #198754; /* Green for completed */
+}
+
+h3 {
+  margin-top: 20px;
+  font-size: 1.4rem;
+  color: #343a40;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 5px;
+}
+
 .completed-todos-section {
   max-width: 600px; /* Matches the width of the incomplete todos */
   margin: 0 auto; /* Center the section horizontally */
