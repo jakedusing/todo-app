@@ -36,7 +36,8 @@ router.get("/", isAuthenicated, async (req, res) => {
     res.render("FriendList", { friends, pendingRequests, sentRequests });
   } catch (err) {
     console.error("Error fetching friends:", err);
-    res.status(500).send("Server Error");
+    req.flash("error", "Unable to fetch friends at this time");
+    res.redirect("/");
   }
 });
 
@@ -47,7 +48,8 @@ router.post("/request", isAuthenicated, async (req, res) => {
   try {
     const recipient = await User.findOne({ username: recipientUsername });
     if (!recipient) {
-      return res.status(404).json({ message: "User not found" });
+      req.flash("error", "User not found.");
+      return res.redirect("/friends/browse");
     }
 
     // Check if friendship already exists
@@ -69,10 +71,12 @@ router.post("/request", isAuthenicated, async (req, res) => {
       recipient: recipient._id,
     });
 
-    res.json({ message: "Friend request sent" });
+    req.flash("success", "Friend request sent successfully!");
+    res.redirect("/friends/browse");
   } catch (err) {
     console.error("Error sending friend request:", err);
-    res.status(500).send("Server Error");
+    req.flash("error", "Error sending friend request");
+    res.redirect("/friends/browse");
   }
 });
 
@@ -81,16 +85,19 @@ router.post("/accept/:id", isAuthenicated, async (req, res) => {
   try {
     const friendship = await Friendship.findById(req.params.id);
     if (!friendship || friendship.recipient.toString() !== req.session.userId) {
-      return res.status(403).send("Unauthorized");
+      req.flash("error", "Unauthorized to accept this request.");
+      return res.redirect("/friends");
     }
 
     friendship.status = "accepted";
     await friendship.save();
 
-    res.json({ message: "Friend request accepted" });
+    req.flash("success", "Friend request accepted!");
+    res.redirect("/friends");
   } catch (err) {
     console.error("Error accepting friend request:", err);
-    res.status(500).send("Server Error");
+    req.flash("error", "Error accepting friend request");
+    res.redirect("/friends");
   }
 });
 
@@ -105,13 +112,16 @@ router.post("/cancel/:id", isAuthenicated, async (req, res) => {
       friendship.status === "pending"
     ) {
       await friendship.delete();
-      res.json({ message: "Friend request canceled" });
+      req.flash("success", "Friend request canceled.");
+      res.redirect("/friends");
     } else {
-      res.status(403).send("Unauthorized");
+      req.flash("error", "Unauthorized to cancel this request.");
+      res.redirect("/friends");
     }
   } catch (err) {
     console.error("Error canceling friend request:", err);
-    res.status(500).send("Server Error");
+    req.flash("error", "Error canceling friend request.");
+    res.redirect("/friends");
   }
 });
 
@@ -150,7 +160,8 @@ router.get("/browse", isAuthenicated, async (req, res) => {
     res.render("BrowseUsers", { users, sentIds, friendIds });
   } catch (err) {
     console.error("Error browsing users:", err);
-    res.status(500).send("Server Error");
+    req.flash("error", "Error browsing users.");
+    res.redirect("/");
   }
 });
 
