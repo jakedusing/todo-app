@@ -1,0 +1,43 @@
+/* browseusers.css */
+.container {
+  max-width: 400px; /* Narrow container */
+  margin: 0 auto; /* Center the container */
+  padding: 20px; /* Add padding */
+}
+
+.list-group-item {
+  border: 1px solid #ddd; /* Subtle border */
+  border-radius: 8px; /* Rounded corners */
+  margin-bottom: 10px; /* Add spacing between items */
+  padding: 15px; /* Inner padding */
+  background-color: #f9f9f9; /* Light background */
+  display: flex; /* Use flex for layout */
+  justify-content: space-between; /* Space between content */
+  align-items: center; /* Center content vertically */
+  gap: 15px; /* Add space between flex items */
+}
+
+.list-group-item div {
+  flex-grow: 1; /* Allow the username and email to take up available space */
+}
+
+.list-group-item span {
+  font-weight: bold; /* Highlight username */
+  font-size: 1rem; /* Adjust font size */
+  display: block; /* Ensure username is on its own line */
+  margin-bottom: 5px; /* Space below the username */
+}
+
+.list-group-item .email {
+  font-size: 0.875rem; /* Smaller font size for email */
+  color: #666; /* Subtle text color */
+}
+
+.list-group-item button {
+  min-width: 140px; /* Ensure consistent button width */
+  margin-left: auto; /* Push the button to the far right */
+}
+
+.list-group-item form {
+  margin: 0; /* Remove margin around forms */
+}

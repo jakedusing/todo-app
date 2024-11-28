@@ -118,14 +118,36 @@ router.post("/cancel/:id", isAuthenicated, async (req, res) => {
 // View all users except the logged-in user
 router.get("/browse", isAuthenicated, async (req, res) => {
   try {
-    const users = await User.find({ _id: { $ne: req.session.userId } });
+    const currentUserId = req.session.userId;
+
+    // Fetch all users except the current user
+    const users = await User.find({ _id: { $ne: currentUserId } });
+
+    // Fetch friendships where the user is involved and accepted
+    const friendships = await Friendship.find({
+      $or: [
+        { requester: currentUserId, status: "accepted" },
+        { recipient: currentUserId, status: "accepted" },
+      ],
+    });
+
+    // collect IDs of friends
+    const friendIds = friendships.map((friendship) =>
+      friendship.requester.toString() === currentUserId
+        ? friendship.recipient.toString()
+        : friendship.requester.toString()
+    );
+
+    // fetch friend requests sent by the current user
     const sentRequests = await Friendship.find({
-      requester: req.session.userId,
+      requester: currentUserId,
       status: "pending",
     }).populate("recipient", "username");
+
+    // Collect IDs of users who have been sent a friend request
     const sentIds = sentRequests.map((req) => req.recipient._id.toString());
 
-    res.render("BrowseUsers", { users, sentIds });
+    res.render("BrowseUsers", { users, sentIds, friendIds });
   } catch (err) {
     console.error("Error browsing users:", err);
     res.status(500).send("Server Error");
