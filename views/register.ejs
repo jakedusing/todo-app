@@ -1,6 +1,11 @@
 <%- include("partials/header"); %>
 <main class="vh-100 d-flex justify-content-center align-items-center">
   <div class="card p-4 shadow-lg" style="width: 100%; max-width: 400px">
+    <% if (success_msg.length > 0) { %>
+    <div class="alert alert-success" role="alert"><%= success_msg %></div>
+    <% } %> <% if (error_msg.length > 0) { %>
+    <div class="alert alert-danger" role="alert"><%= error_msg %></div>
+    <% } %>
     <div class="card-body">
       <h1 class="text-center mb-4">Register</h1>
       <form action="/auth/register" method="POST">

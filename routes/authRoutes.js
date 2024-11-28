@@ -11,20 +11,20 @@ router.post("/register", async (req, res) => {
     // Check if username or email already exists
     const userExists = await User.findOne({ $or: [{ username }, { email }] });
     if (userExists) {
-      return res
-        .status(400)
-        .json({ message: "Username or email already exists" });
+      req.flash("error", "Username or email already exists");
+      return res.redirect("/auth/register");
     }
 
     // Create a new user
     const newUser = new User({ username, email, password });
     await newUser.save();
 
-    // Redirect or send a response upon successful registration
-    res.status(201).json({ message: "User registered successfully" });
+    req.flash("success", "User registered successfully! Please log in.");
+    res.redirect("/auth/login");
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "server error" });
+    req.flash("error", "Server error. Please try again.");
+    res.redirect("/auth/register");
   }
 });
 
@@ -44,23 +44,25 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      // Send early response if user not found
-      return res.status(400).json({ message: "Invalid username or password" });
+      req.flash("error", "Invalid username or password");
+      return res.redirect("/auth/login");
     }
 
     // Check password validity
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
-      // Send early response if password doesn't match
-      return res.status(400).json({ message: "Invalid username or password" });
+      req.flash("error", "Invalid username or password");
+      return res.redirect("/auth/login");
     }
 
     // Successful login, set session and redirect
     req.session.userId = user._id; // Store user ID in session
+    req.flash("success", "Logged in successfully!");
     return res.redirect("/todos/dashboard"); // Redirect to a protected route (only if authenticated)
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ message: "Server error" });
+    req.flash("error", "Server error. Please try again.");
+    res.redirect("/auth/login");
   }
 });
 
@@ -83,8 +85,10 @@ router.get("/profile", isAuthenticated, async (req, res) => {
 router.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) {
-      return res.status(500).json({ message: "Failed to log out" });
+      req.flash("error", "Failed to log out. Please try again.");
+      return res.redirect("/todos/dashboard");
     }
+    req.flash("success", "Logged out successfully.");
     res.redirect("/auth/login"); // redirect to login page after logging out
   });
 });
