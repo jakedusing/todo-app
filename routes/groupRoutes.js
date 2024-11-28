@@ -36,7 +36,15 @@ router.post("/create", isAuthenticated, async (req, res) => {
   const { name, members } = req.body;
 
   try {
-    const groupMembers = members
+    const groupMembers = Array.isArray(members) ? members : [members]; // ensure it's an array
+    const validMembers = await User.find({ _id: { $in: groupMembers } }, "_id"); // validate member IDs
+
+    const group = await Group.create({
+      name,
+      owner: req.session.userId,
+      members: [...validMembers.map((user) => user._id), req.session.userId], // Include the current user
+    });
+    /*const groupMembers = members
       .split(",")
       .map((member) => member.trim()) // clean up whitespace
       .filter(Boolean); // remove empty strings
@@ -49,7 +57,7 @@ router.post("/create", isAuthenticated, async (req, res) => {
       name,
       owner: req.session.userId,
       members: [...memberIds.map((user) => user._id), req.session.userId], // Add self to group
-    });
+    }); */
 
     await group.save();
     req.flash("success", `Group "${name}" created successfully!`);
