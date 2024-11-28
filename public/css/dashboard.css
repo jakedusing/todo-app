@@ -137,3 +137,21 @@ h3 {
 .completed-todo button {
   width: 120px; /* Consistent button width */
 }
+
+/* Logout button styles */
+.logout-container {
+  margin-top: auto;
+  text-align: center;
+}
+
+.logout-container .btn {
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.logout-container .btn:active {
+  transform: scale(1);
+}

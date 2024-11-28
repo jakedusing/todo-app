@@ -88,7 +88,7 @@ router.get("/logout", (req, res) => {
       req.flash("error", "Failed to log out. Please try again.");
       return res.redirect("/todos/dashboard");
     }
-    req.flash("success", "Logged out successfully.");
+    //req.flash("success", "Logged out successfully.");
     res.redirect("/auth/login"); // redirect to login page after logging out
   });
 });

@@ -117,7 +117,7 @@
 
    <!-- Section for Assigned Todos -->
     <section class="todo-section mb-5">
-      <h2>Group Todos Assigned to You</h2>
+      <h2 class="text-center">Group Todos Assigned to You</h2>
 
       <% if (incompleteAssignedTodos.length > 0 || completedAssignedTodos.length > 0) {%>
 
@@ -172,14 +172,16 @@
                   <% }); %>
               </ul>
               <% } else { %>
-                <p class="text-muted">No completed todos assigned to you!</p>
+                <p class="text-muted text-center">No completed todos assigned to you!</p>
                 <% } %>
 
                 <% } else { %>
-                  <p class="text-muted">No group todos assigned to you yet!</p>
+                  <p class="text-muted text-center">No group todos assigned to you yet!</p>
                   <% } %>
     </section>
 
-  <a href="/auth/logout">Logout</a>
+  <div class="logout-container text-center mt-5">
+    <a href="/auth/logout" class="btn btn-danger btn-lg">Logout</a>
+  </div>
 </main>
 <%- include("partials/footer"); %>

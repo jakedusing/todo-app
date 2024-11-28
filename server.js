@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const dontenv = require("dotenv");
+const dotenv = require("dotenv");
 const path = require("path");
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -10,7 +10,7 @@ const todoRoutes = require("./routes/todoRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 const friendshipRoutes = require("./routes/friendshipRoutes");
 
-dontenv.config();
+dotenv.config();
 const app = express();
 
 // Middleware
