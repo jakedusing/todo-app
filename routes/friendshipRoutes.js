@@ -59,9 +59,8 @@ router.post("/request", isAuthenicated, async (req, res) => {
     });
 
     if (exisitingFriendship) {
-      return res
-        .status(400)
-        .json({ message: "Friend request already senty or accepted" });
+      req.flash("error", "This user is already your friend.");
+      return res.redirect("/friends/browse");
     }
 
     // create a new friendship

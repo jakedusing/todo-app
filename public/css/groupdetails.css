@@ -1,0 +1,110 @@
+/* Group Header Section */
+.group-header .card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff; /* Clean white background */
+  padding: 20px;
+}
+
+.group-header .card-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #007bff; /* Add some color to the group name */
+}
+
+.group-header .card-text {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+/* Add Todo Section */
+.add-todo-section .card {
+  border: none;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.add-todo-section .card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.add-todo-section .form-control,
+.add-todo-section .form-select {
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  padding: 10px;
+}
+
+.add-todo-section .btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.add-todo-section .btn:hover {
+  background-color: #0056b3;
+}
+
+/* Todos Section */
+.todos-section {
+  margin-bottom: 30px;
+}
+
+.todos-section h3 {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #495057;
+}
+
+.todos-section .list-group-item {
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.todos-section .list-group-item div {
+  flex-grow: 1;
+}
+
+.todos-section .badge {
+  font-size: 0.85rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.todos-section .btn {
+  font-size: 0.85rem;
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-transform: capitalize;
+}
+
+.todos-section .btn-success {
+  background-color: #28a745;
+  border: none;
+}
+
+.todos-section .btn-success:hover {
+  background-color: #218838;
+}
+
+.todos-section .btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.todos-section .btn-secondary:hover {
+  background-color: #5a6268;
+}
