@@ -2,6 +2,7 @@ const express = require("express");
 const Group = require("../models/Group");
 const Todo = require("../models/Todo");
 const User = require("../models/User");
+const Chat = require("../models/Chat");
 const Friendship = require("../models/Friendship");
 const isAuthenticated = require("../middleware/auth");
 const router = express.Router();
@@ -75,6 +76,9 @@ router.get("/:id", isAuthenticated, async (req, res) => {
     const group = await Group.findById(req.params.id)
       .populate("members")
       .populate("owner"); // populate the owner field
+    const messages = await Chat.find({ group: req.params.id })
+      .populate("sender", "username") // populate sender info
+      .sort({ createdAt: 1 }); // oldest to newest
     if (
       !group.members.some((member) => member._id.equals(req.session.userId))
     ) {
@@ -85,7 +89,7 @@ router.get("/:id", isAuthenticated, async (req, res) => {
       "assignee",
       "username"
     );
-    res.render("GroupDetails", { group, todos });
+    res.render("GroupDetails", { group, todos, messages });
   } catch (err) {
     console.error("Error fetching group details:", err);
     res.status(500).send("Server Error");
