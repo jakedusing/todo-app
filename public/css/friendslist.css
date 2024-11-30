@@ -1,0 +1,62 @@
+/* Pending Requests Received Section */
+.pending-requests .list-group-item {
+  max-width: 400px;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem; /* Tighten padding */
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between; /* Button close to the name */
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.pending-requests .list-group-item span {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #343a40;
+  margin: 0; /* Remove extra margins */
+}
+
+.pending-requests .btn {
+  padding: 0.25rem 0.5rem; /* Smaller buttons */
+  font-size: 0.9rem; /* Adjust button text size */
+}
+
+/* Pending Requests Sent Section */
+.sent-requests .list-group-item {
+  max-width: 400px;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 0.75rem; /* Tighten padding */
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  text-align: center; /* Center-align the text */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.sent-requests .list-group-item span {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #495057;
+  margin: 0; /* Remove extra margins */
+}
+
+/* Friends Section */
+.friends .list-group-item {
+  max-width: 300px; /* Narrower list items for Friends */
+  width: 100%;
+  margin-bottom: 0.5rem;
+  padding: 0.4rem 0.6rem; /* Slightly smaller padding */
+  background-color: #e9ecef;
+  border-radius: 0.5rem;
+  text-align: center; /* Center the friend's name */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.friends .list-group-item span {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #212529;
+}
