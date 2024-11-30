@@ -136,7 +136,8 @@ router.get("/:id/manage", isAuthenticated, async (req, res) => {
 
     // Ensure user is authorized to manage the group
     if (group.owner.toString() !== req.session.userId) {
-      return res.status(403).send("Unathorized");
+      req.flash("error", "Only owners of the group may manage");
+      return res.redirect("/groups");
     }
 
     // Fetch the user's friends
