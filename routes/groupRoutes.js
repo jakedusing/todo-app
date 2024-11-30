@@ -139,7 +139,21 @@ router.get("/:id/manage", isAuthenticated, async (req, res) => {
       return res.status(403).send("Unathorized");
     }
 
-    res.render("GroupManagement", { group });
+    // Fetch the user's friends
+    const friendships = await Friendship.find({
+      $or: [
+        { requester: req.session.userId, status: "accepted" },
+        { recipient: req.session.userId, status: "accepted" },
+      ],
+    }).populate("requester recipient", "username");
+
+    const friends = friendships.map((friendship) =>
+      friendship.requester._id.toString() === req.session.userId
+        ? friendship.recipient
+        : friendship.requester
+    );
+
+    res.render("GroupManagement", { group, friends });
   } catch (err) {
     console.error("Error fetching group for management:", err);
     res.status(500).send("Server Error");
@@ -148,7 +162,7 @@ router.get("/:id/manage", isAuthenticated, async (req, res) => {
 
 // Add Member to group
 router.post("/:id/add", isAuthenticated, async (req, res) => {
-  const { username } = req.body;
+  const { members } = req.body; // extract member IDs from the form (array if multiple)
 
   try {
     const group = await Group.findById(req.params.id);
@@ -159,18 +173,34 @@ router.post("/:id/add", isAuthenticated, async (req, res) => {
       return res.redirect(`/groups/${group._id}/manage`);
     }
 
-    const user = await User.findOne({ username });
-    if (!user) {
-      req.flash("error", `User "${username}" not found.`);
-      return res.redirect(`/groups/${group._id}/manage`);
+    // Ensure members is an array (handle single or multiple selections)
+    const memberIds = Array.isArray(members) ? members : [members];
+
+    // Separate new members from exisiting members
+    const alreadyMembers = [];
+    const newMembers = [];
+    for (const memberId of memberIds) {
+      if (group.members.includes(memberId)) {
+        alreadyMembers.push(memberId);
+      } else {
+        group.members.push(memberId);
+        newMembers.push(memberId);
+      }
     }
 
-    if (!group.members.includes(user._id)) {
-      group.members.push(user._id);
+    if (newMembers.length > 0) {
       await group.save();
-      req.flash("success", `User "${username}" added to the group!`);
-    } else {
-      req.flash("info", `User "${username}" is already in the group.`);
+      req.flash(
+        "success",
+        `Added ${newMembers.length} new member(s) to the group!`
+      );
+    }
+
+    if (alreadyMembers.length > 0) {
+      req.flash(
+        "error",
+        `${alreadyMembers.length} member(s) were already in the group.`
+      );
     }
 
     res.redirect(`/groups/${group._id}/manage`);

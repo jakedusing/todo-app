@@ -1,6 +1,28 @@
 <%- include("partials/header"); %>
 
 <main class="container mt-5">
+  <!-- Flash Messages-->
+  <% if (success_msg.length > 0) {%>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= success_msg %>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  <% } %> <% if (error_msg.length > 0) {%>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= error_msg %>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
+  <% } %>
   <h1>Manage Group: <%= group.name %></h1>
   <ul class="list-group mb-4">
     <% group.members.forEach(member => { %>
@@ -21,13 +43,18 @@
 
   <form action="/groups/<%= group._id %>/add" method="POST" class="row g-3">
     <div class="col-md-9">
-      <input
-        type="text"
-        name="username"
+      <label for="groupMembers" class="form-label">Select Members</label>
+      <select
+        id="groupMembers"
+        name="members"
         class="form-control"
-        placeholder="Add member by username"
+        multiple
         required
-      />
+      >
+        <% friends.forEach(friend => { %>
+        <option value="<%= friend._id %>"><%= friend.username %></option>
+        <% }); %>
+      </select>
     </div>
     <div class="col-md-3">
       <button type="submit" class="btn btn-primary w-100">Add Member</button>
