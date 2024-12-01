@@ -33,7 +33,9 @@ app.use(
   })
 );
 app.use((req, res, next) => {
-  res.locals.user = req.session.userId ? { id: req.session.userId } : null;
+  res.locals.user = req.session.userId
+    ? { id: req.session.userId, username: req.session.username }
+    : null;
   next();
 });
 app.use(flash());
@@ -69,9 +71,10 @@ io.on("connection", (socket) => {
   });
 
   // Handle receiving a new chat message
-  socket.on("chatMessage", (data) => {
-    console.log(`Message from group ${data.groupId}: ${data.content}`);
-    io.to(data.groupId).emit("chatMessage", data); // Broadcast to group members
+  socket.on("chatMessage", ({ groupId, sender, content }) => {
+    console.log("Emitting message:", { sender, content });
+    const message = { sender, content };
+    io.to(groupId).emit("chatMessage", message);
   });
 
   socket.on("disconnect", () => {
@@ -81,4 +84,4 @@ io.on("connection", (socket) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`server running on port ${PORT}`));
+server.listen(PORT, () => console.log(`server running on port ${PORT}`));

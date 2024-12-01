@@ -18,7 +18,9 @@ router.get("/:groupId", isAuthenticated, async (req, res) => {
       return res.status(403).send("You do not have access to this group.");
     }
 
-    const messages = await Chat.find({ groupId }).sort({ createdAt: 1 });
+    const messages = await Chat.find({ groupId })
+      .populate("sender", "username")
+      .sort({ createdAt: 1 });
     res.json(messages);
   } catch (err) {
     console.error(err);
@@ -44,7 +46,7 @@ router.post("/:groupId", isAuthenticated, async (req, res) => {
     // Create a new chat message
     const newMessage = new Chat({
       groupId,
-      sender: req.user._id,
+      sender: req.user.username,
       message,
     });
 

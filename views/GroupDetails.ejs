@@ -157,7 +157,7 @@
           </div>
           <% }); %>
         </div>
-        <form action="/groups/<%= group._id %>/chat" method="POST">
+        <form id="chat-form">
           <div class="input-group">
             <input
               type="text"
@@ -173,5 +173,46 @@
     </div>
   </div>
 </main>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  // Join the group room when the page loads
+  const groupId = "<%= group._id %>";
+  const username = "<%= user.username %>";
+
+  console.log("User:", username);
+  socket.emit("joinGroup", groupId);
+
+  // Handle chat form submission
+  const chatForm = document.getElementById("chat-form");
+  chatForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const messageInput = chatForm.querySelector('input[name="message"]');
+    const message = messageInput.value.trim();
+    if (message) {
+      socket.emit("chatMessage", {
+        groupId,
+        sender: {username: username},
+        content: message,
+      });
+      messageInput.value = "";
+      console.log("<%= user.username %>");
+    }
+  });
+
+  
+
+  // Listen for incoming chat messages
+  const chatMessages = document.getElementById("chat-messages");
+  socket.on("chatMessage", (msg) => {
+    const newMessage = document.createElement("div");
+    newMessage.classList.add("chat-message");
+    newMessage.innerHTML = `<strong>${msg.sender.username}:</strong> ${msg.content}`;
+    chatMessages.appendChild(newMessage);
+    chatMessages.scrollTop = chatMessages.scrollHeight;  // Auto-scroll to bottom
+  });
+</script>
 
 <%- include("partials/footer"); %>

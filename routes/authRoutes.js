@@ -57,6 +57,7 @@ router.post("/login", async (req, res) => {
 
     // Successful login, set session and redirect
     req.session.userId = user._id; // Store user ID in session
+    req.session.username = user.username;
     req.flash("success", "Logged in successfully!");
     return res.redirect("/todos/dashboard"); // Redirect to a protected route (only if authenticated)
   } catch (err) {

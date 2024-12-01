@@ -89,7 +89,7 @@ router.get("/:id", isAuthenticated, async (req, res) => {
       "assignee",
       "username"
     );
-    res.render("GroupDetails", { group, todos, messages });
+    res.render("GroupDetails", { group, todos, messages, user: req.session });
   } catch (err) {
     console.error("Error fetching group details:", err);
     res.status(500).send("Server Error");
