@@ -182,7 +182,7 @@
   const groupId = "<%= group._id %>";
   const username = "<%= user.username %>";
 
-  console.log("User:", username);
+  //console.log("User ID:", userId);
   socket.emit("joinGroup", groupId);
 
   // Handle chat form submission
@@ -193,8 +193,8 @@
     const message = messageInput.value.trim();
     if (message) {
       socket.emit("chatMessage", {
-        groupId,
-        sender: {username: username},
+        groupId: groupId,
+        sender: username,
         content: message,
       });
       messageInput.value = "";
@@ -209,7 +209,10 @@
   socket.on("chatMessage", (msg) => {
     const newMessage = document.createElement("div");
     newMessage.classList.add("chat-message");
-    newMessage.innerHTML = `<strong>${msg.sender.username}:</strong> ${msg.content}`;
+
+    // Check if sender is a string or object, then handle accordingly
+    const senderName = typeof msg.sender === "string" ? msg.sender : msg.sender.username;
+    newMessage.innerHTML = `<strong>${senderName}:</strong> ${msg.content}`;
     chatMessages.appendChild(newMessage);
     chatMessages.scrollTop = chatMessages.scrollHeight;  // Auto-scroll to bottom
   });

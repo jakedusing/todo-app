@@ -12,6 +12,8 @@ const todoRoutes = require("./routes/todoRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 const friendshipRoutes = require("./routes/friendshipRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const Message = require("./models/Message");
+const User = require("./models/User");
 
 dotenv.config();
 const app = express();
@@ -71,11 +73,52 @@ io.on("connection", (socket) => {
   });
 
   // Handle receiving a new chat message
-  socket.on("chatMessage", ({ groupId, sender, content }) => {
+  socket.on("chatMessage", async (data) => {
+    try {
+      const { groupId, sender, content } = data;
+
+      // Find the user by username and get their ObjectId
+      const user = await User.findOne({ username: sender });
+      if (!user) {
+        throw new Error("User not found");
+      }
+      // Log the received data
+      console.log("Received chatMessage event:", data);
+
+      // Ensure sender is provided (not empty)
+      if (!sender || !content) {
+        throw new Error("Sender or content missing");
+      }
+
+      // Create and save the chat message
+      const chatMessage = new Message({
+        groupId,
+        sender: user._id,
+        content,
+      });
+
+      await chatMessage.save();
+      console.log("Message saved successfully");
+
+      // Broadcast the message to the group
+      io.to(groupId).emit("chatMessage", {
+        groupId,
+        sender,
+        content,
+      });
+    } catch (error) {
+      console.error("Error saving message to DB:", error);
+    }
+  });
+
+  socket.on("chatMessage", (data) => {
+    console.log("Received chatMessage event:", data);
+  });
+  /* socket.on("chatMessage", ({ groupId, sender, content }) => {
     console.log("Emitting message:", { sender, content });
     const message = { sender, content };
     io.to(groupId).emit("chatMessage", message);
-  });
+  }); */
 
   socket.on("disconnect", () => {
     console.log("A user disconnected");

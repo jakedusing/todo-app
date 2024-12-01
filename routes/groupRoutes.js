@@ -77,7 +77,7 @@ router.get("/:id", isAuthenticated, async (req, res) => {
     const group = await Group.findById(req.params.id)
       .populate("members")
       .populate("owner"); // populate the owner field
-    const messages = await Chat.find({ group: req.params.id })
+    const messages = await Message.find({ group: req.params.id })
       .populate("sender", "username") // populate sender info
       .sort({ createdAt: 1 }); // oldest to newest
     if (
