@@ -5,6 +5,8 @@ const path = require("path");
 const session = require("express-session");
 const flash = require("connect-flash");
 const bodyParser = require("body-parser");
+const http = require("http");
+const { Server } = require("socket.io");
 const authRoutes = require("./routes/authRoutes");
 const todoRoutes = require("./routes/todoRoutes");
 const groupRoutes = require("./routes/groupRoutes");
@@ -13,6 +15,10 @@ const chatRoutes = require("./routes/chatRoutes");
 
 dotenv.config();
 const app = express();
+
+// Create an HTTP server
+const server = http.createServer(app); // wrap express app with HTTP server
+const io = new Server(server); // create socket.io instance
 
 // Middleware
 app.use(express.static(path.join(__dirname, "public")));
@@ -51,6 +57,27 @@ app.use("/todos", todoRoutes);
 app.use("/groups", groupRoutes);
 app.use("/friends", friendshipRoutes);
 app.use("/chat", chatRoutes);
+
+// Websocket integration
+io.on("connection", (socket) => {
+  console.log("A user connected");
+
+  // Handle joining a group room
+  socket.on("joinGroup", (groupId) => {
+    socket.join(groupId), // Join the group room
+      console.log(`User joined group ${groupId}`);
+  });
+
+  // Handle receiving a new chat message
+  socket.on("chatMessage", (data) => {
+    console.log(`Message from group ${data.groupId}: ${data.content}`);
+    io.to(data.groupId).emit("chatMessage", data); // Broadcast to group members
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+  });
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;
