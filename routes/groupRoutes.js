@@ -87,12 +87,27 @@ router.get("/:id", isAuthenticated, async (req, res) => {
     }
 
     //console.log("Fetched Messages:", messages);
-
+    const formattedMessages = messages.map((msg) => ({
+      ...msg.toObject(),
+      formattedTime: new Date(msg.createdAt).toLocaleTimeString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      }),
+    }));
     const todos = await Todo.find({ groupId: group._id }).populate(
       "assignee",
       "username"
     );
-    res.render("GroupDetails", { group, todos, messages, user: req.session });
+    res.render("GroupDetails", {
+      group,
+      todos,
+      messages: formattedMessages,
+      user: req.session,
+    });
   } catch (err) {
     console.error("Error fetching group details:", err);
     res.status(500).send("Server Error");

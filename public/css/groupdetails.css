@@ -42,3 +42,9 @@
 .input-group .btn {
   border-radius: 0 5px 5px 0;
 }
+
+.message-time {
+  font-size: 0.8em;
+  color: #666;
+  margin-left: 10px;
+}

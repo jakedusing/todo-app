@@ -154,6 +154,7 @@
           <% messages.forEach(msg => { %>
           <div class="chat-message">
             <strong><%= msg.sender.username %>:</strong> <%= msg.content %>
+            <span class="message-time"><%= msg.formattedTime %></span>
           </div>
           <% }); %>
         </div>
@@ -212,7 +213,10 @@
 
     // Check if sender is a string or object, then handle accordingly
     const senderName = typeof msg.sender === "string" ? msg.sender : msg.sender.username;
-    newMessage.innerHTML = `<strong>${senderName}:</strong> ${msg.content}`;
+    newMessage.innerHTML = `
+    <strong>${senderName}:</strong> ${msg.content}
+    <span class="message-time">${msg.createdAt}</span>
+    `;
     chatMessages.appendChild(newMessage);
     chatMessages.scrollTop = chatMessages.scrollHeight;  // Auto-scroll to bottom
   });

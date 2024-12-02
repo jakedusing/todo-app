@@ -100,11 +100,21 @@ io.on("connection", (socket) => {
       await chatMessage.save();
       console.log("Message saved successfully");
 
+      const formattedTime = new Date(chatMessage.createdAt).toLocaleString(
+        "en-US",
+        {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        }
+      );
+
       // Broadcast the message to the group
       io.to(groupId).emit("chatMessage", {
         groupId,
         sender,
         content,
+        createdAt: formattedTime,
       });
     } catch (error) {
       console.error("Error saving message to DB:", error);
