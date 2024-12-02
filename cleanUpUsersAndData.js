@@ -3,6 +3,7 @@ const User = require("./models/User"); // Adjust the path as needed
 const Friendship = require("./models/Friendship");
 const Todo = require("./models/Todo");
 const Group = require("./models/Group");
+const Message = require("./models/Message"); // Import the Message model
 
 async function cleanUpUsersAndData() {
   try {
@@ -29,6 +30,15 @@ async function cleanUpUsersAndData() {
       owner: { $in: userIdArray },
     });
     console.log(`${groupsResult.deletedCount} groups were deleted.`);
+
+    // Delete all messages associated with the groups or users
+    const messagesResult = await Message.deleteMany({
+      $or: [
+        { groupId: { $in: userIdArray } },
+        { sender: { $in: userIdArray } },
+      ],
+    });
+    console.log(`${messagesResult.deletedCount} messages were deleted.`);
 
     // Finally, delete all users
     const usersResult = await User.deleteMany({});

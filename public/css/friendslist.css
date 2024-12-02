@@ -1,62 +1,119 @@
-/* Pending Requests Received Section */
-.pending-requests .list-group-item {
-  max-width: 400px;
-  width: 100%;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem 0.75rem; /* Tighten padding */
-  background-color: #ffffff;
-  border-radius: 0.5rem;
-  display: flex;
-  justify-content: space-between; /* Button close to the name */
-  align-items: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+/* General Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-.pending-requests .list-group-item span {
+body {
+  background-color: #f4f6f9;
+  color: #333;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Section Styling */
+.section-container {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+/* List Group */
+.list-group {
+  list-style-type: none;
+}
+
+.list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 0.75rem;
+  background-color: #fff;
+  transition: all 0.2s ease-in-out;
+}
+
+.list-group-item:hover {
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item i {
+  font-size: 1.2rem;
+  color: #3498db;
+  margin-right: 0.75rem;
+}
+
+.list-group-item .username {
+  flex-grow: 1;
   font-size: 1rem;
   font-weight: 500;
-  color: #343a40;
-  margin: 0; /* Remove extra margins */
+  color: #2c3e50;
 }
 
-.pending-requests .btn {
-  padding: 0.25rem 0.5rem; /* Smaller buttons */
-  font-size: 0.9rem; /* Adjust button text size */
+.list-group-item form {
+  margin-left: auto;
 }
 
-/* Pending Requests Sent Section */
-.sent-requests .list-group-item {
-  max-width: 400px;
-  width: 100%;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem 0.75rem; /* Tighten padding */
-  background-color: #f8f9fa;
-  border-radius: 0.5rem;
-  text-align: center; /* Center-align the text */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.sent-requests .list-group-item span {
-  font-size: 0.95rem;
-  font-weight: 400;
-  color: #495057;
-  margin: 0; /* Remove extra margins */
-}
-
-/* Friends Section */
-.friends .list-group-item {
-  max-width: 300px; /* Narrower list items for Friends */
-  width: 100%;
-  margin-bottom: 0.5rem;
-  padding: 0.4rem 0.6rem; /* Slightly smaller padding */
-  background-color: #e9ecef;
-  border-radius: 0.5rem;
-  text-align: center; /* Center the friend's name */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.friends .list-group-item span {
-  font-size: 1rem;
+/* Buttons */
+.btn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: #212529;
+  border-radius: 20px;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: #fff;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+/* Flash Messages */
+.alert {
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.alert-dismissible .btn-close {
+  background: transparent;
+  border: none;
+  color: #333;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .list-group-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .list-group-item .username {
+    margin-bottom: 0.5rem;
+  }
+
+  .list-group-item form {
+    margin-top: 0.5rem;
+  }
 }
