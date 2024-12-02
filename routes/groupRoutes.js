@@ -77,7 +77,7 @@ router.get("/:id", isAuthenticated, async (req, res) => {
     const group = await Group.findById(req.params.id)
       .populate("members")
       .populate("owner"); // populate the owner field
-    const messages = await Message.find({ group: req.params.id })
+    const messages = await Message.find({ group: req.params.groupId })
       .populate("sender", "username") // populate sender info
       .sort({ createdAt: 1 }); // oldest to newest
     if (
@@ -85,6 +85,8 @@ router.get("/:id", isAuthenticated, async (req, res) => {
     ) {
       return res.status(403).send("Unauthorized");
     }
+
+    //console.log("Fetched Messages:", messages);
 
     const todos = await Todo.find({ groupId: group._id }).populate(
       "assignee",
