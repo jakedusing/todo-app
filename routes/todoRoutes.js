@@ -93,12 +93,14 @@ router.post("/toggle/:id", isAuthenticated, async (req, res) => {
         member.equals(req.session.userId)
       );
       if (!isGroupMember || !todo.assignee.equals(req.session.userId)) {
-        return res.status(403).send("unauthorized");
+        req.flash("error", "not authorized");
+        return res.redirect(`/groups/${todo.groupId._id}`);
       }
     } else {
       // Personal todo: ensure the user owns it
       if (todo.userId.toString() !== req.session.userId) {
-        return res.status(403).send("Unauthorized");
+        req.flash("error", "not authorized");
+        return res.redirect(`/groups/${todo.groupId._id}`);
       }
     }
 

@@ -1,89 +1,89 @@
 <%- include("partials/header"); %>
 <link rel="stylesheet" href="/css/friendslist.css" />
 
-<main class="container my-5">
+<main class="friendslist-page">
   <!-- Flash Messages -->
   <% if (success_msg.length > 0) { %>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <div class="alert success">
     <%= success_msg %>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="alert"
-      aria-label="Close"
-    ></button>
+    <button class="close-btn" onclick="this.parentElement.style.display='none'">
+      &times;
+    </button>
   </div>
   <% } %> <% if (error_msg.length > 0) { %>
-  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+  <div class="alert error">
     <%= error_msg %>
-    <button
-      type="button"
-      class="btn-close"
-      data-bs-dismiss="alert"
-      aria-label="Close"
-    ></button>
+    <button class="close-btn" onclick="this.parentElement.style.display='none'">
+      &times;
+    </button>
   </div>
   <% } %>
 
   <!-- Header -->
-  <h1 class="text-center mb-4">My Friends</h1>
+  <div class="title-container">
+    <h1 class="page-title">Friends</h1>
+    <p class="subtitle">
+      Manage your connections and stay connected with friends.
+    </p>
+  </div>
 
-  <!-- Pending Requests Received -->
-  <section class="section-container">
+  <!-- Sections -->
+  <div class="card">
     <h2 class="section-title">Pending Friend Requests</h2>
     <% if (pendingRequests && pendingRequests.length > 0) { %>
-    <ul class="list-group">
+    <ul class="friends-list">
       <% pendingRequests.forEach(request => { %>
-      <li class="list-group-item">
-        <span class="username"><%= request.requester.username %></span>
-        <form
-          action="/friends/accept/<%= request._id %>"
-          method="POST"
-          class="ml-auto"
-        >
-          <button class="btn btn-primary btn-sm">Accept</button>
+      <li class="friends-item">
+        <div class="info">
+          <i class="bi bi-person-circle icon"></i>
+          <span><%= request.requester.username %></span>
+        </div>
+        <form action="/friends/accept/<%= request._id %>" method="POST">
+          <button class="btn accept">Accept</button>
         </form>
       </li>
       <% }) %>
     </ul>
     <% } else { %>
-    <p class="text-muted">No pending requests received.</p>
+    <p class="empty-message">No pending requests at the moment.</p>
     <% } %>
-  </section>
+  </div>
 
-  <!-- Pending Requests Sent -->
-  <section class="section-container">
+  <div class="card">
     <h2 class="section-title">Pending Requests Sent</h2>
     <% if (sentRequests && sentRequests.length > 0) { %>
-    <ul class="list-group">
+    <ul class="friends-list">
       <% sentRequests.forEach(request => { %>
-      <li class="list-group-item">
-        Request sent to
-        <span class="username"><%= request.recipient.username %></span>
+      <li class="friends-item">
+        <div class="info">
+          <i class="bi bi-person-circle icon"></i>
+          <span>Request sent to <%= request.recipient.username %></span>
+        </div>
       </li>
       <% }) %>
     </ul>
     <% } else { %>
-    <p class="text-muted">No pending requests sent.</p>
+    <p class="empty-message">No pending requests sent.</p>
     <% } %>
-  </section>
+  </div>
 
-  <!-- Accepted Friends -->
-  <section class="section-container">
+  <div class="card">
     <h2 class="section-title">Friends</h2>
     <% if (friends && friends.length > 0) { %>
-    <ul class="list-group">
+    <ul class="friends-list">
       <% friends.forEach(friend => { %>
-      <li class="list-group-item">
-        <i class="bi bi-person-circle"></i>
-        <span class="username"><%= friend.username %></span>
+      <li class="friends-item">
+        <div class="info">
+          <i class="bi bi-person-circle icon"></i>
+          <span><%= friend.username %></span>
+        </div>
       </li>
       <% }) %>
     </ul>
     <% } else { %>
-    <p class="text-muted">No friends yet.</p>
+    <p class="empty-message">No friends yet.</p>
     <% } %>
-  </section>
+  </div>
 </main>
 
 <%- include("partials/footer"); %>

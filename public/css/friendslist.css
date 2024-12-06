@@ -1,119 +1,123 @@
 /* General Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
-
-body {
-  background-color: #f4f6f9;
+.friendslist-page {
+  max-width: 500px;
+  margin: 40px auto;
+  font-family: "Arial", sans-serif;
   color: #333;
 }
 
-.container {
-  max-width: 900px;
-  margin: 0 auto;
+.title-container {
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-/* Section Styling */
-.section-container {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 600;
+.page-title {
+  font-size: 2.5rem;
   color: #2c3e50;
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
 }
 
-/* List Group */
-.list-group {
-  list-style-type: none;
+.subtitle {
+  font-size: 1rem;
+  color: #7f8c8d;
 }
 
-.list-group-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
+/* Alert Messages */
+.alert {
+  padding: 15px;
   border-radius: 5px;
-  margin-bottom: 0.75rem;
-  background-color: #fff;
-  transition: all 0.2s ease-in-out;
+  margin-bottom: 20px;
+  position: relative;
 }
 
-.list-group-item:hover {
-  background-color: #f8f8f8;
+.alert.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.close-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Card Container */
+.card {
+  background: #f8f9fa;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.list-group-item i {
-  font-size: 1.2rem;
-  color: #3498db;
-  margin-right: 0.75rem;
+.section-title {
+  font-size: 1.25rem;
+  color: #34495e;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
-.list-group-item .username {
-  flex-grow: 1;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #2c3e50;
+/* Friends List */
+.friends-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.list-group-item form {
-  margin-left: auto;
+.friends-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.friends-item:last-child {
+  border-bottom: none;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: #6c757d;
 }
 
 /* Buttons */
 .btn {
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-  font-weight: 600;
-  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 0.9rem;
   border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.btn-primary {
-  background-color: #3498db;
+.btn.accept {
+  background-color: #28a745;
   color: #fff;
-  transition: background-color 0.2s ease;
 }
 
-.btn-primary:hover {
-  background-color: #2980b9;
+.btn.accept:hover {
+  background-color: #218838;
 }
 
-/* Flash Messages */
-.alert {
-  margin-bottom: 1rem;
-  border-radius: 0.5rem;
-}
-
-.alert-dismissible .btn-close {
-  background: transparent;
-  border: none;
-  color: #333;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .list-group-item {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .list-group-item .username {
-    margin-bottom: 0.5rem;
-  }
-
-  .list-group-item form {
-    margin-top: 0.5rem;
-  }
+.empty-message {
+  text-align: center;
+  color: #7f8c8d;
+  font-size: 0.9rem;
 }

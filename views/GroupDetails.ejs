@@ -1,7 +1,22 @@
+<%- include("partials/header"); %>
 <link rel="stylesheet" href="/css/groupdetails.css">
 
-<%- include("partials/header"); %>
+
 <main class="container mt-5">
+  <!-- Flash Messages-->
+  <% if (success_msg.length > 0) {%>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= success_msg %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <% } %>
+
+    <% if (error_msg.length > 0) {%>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= error_msg %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <% } %>
   <div class="row">
     <!-- Left Column: Todos -->
     <div class="col-md-6">
@@ -71,41 +86,38 @@
         <h2 class="mb-4">Group Todos</h2>
 
         <!-- Incomplete Todos -->
-        <div class="todos-section mb-4">
-          <h3>Incomplete Todos</h3>
-          <% if (todos.some(todo => !todo.completed)) { %>
-          <ul class="list-group">
-            <% todos.filter(todo => !todo.completed).forEach((todo) => { %>
-            <li
-              class="list-group-item d-flex justify-content-between align-items-center"
-            >
-              <div>
-                <strong><%= todo.title %></strong>
-                <span
-                  >- Due:
-                  <%= todo.dueDate
-                    ? todo.dueDate.toLocaleDateString()
-                    : "No due date" %></span
-                >
-                <span
-                  class="badge <%= todo.priority === "High" ? "bg-danger" : todo.priority === "Medium" ? "bg-warning" : "bg-secondary" %>"
-                >
-                  <%= todo.priority %>
-                </span>
-                <br /> Assigned to: <%= todo.assignee.username %>
-              </div>
-              <form action="/todos/toggle/<%= todo._id %>" method="POST">
-                <button type="submit" class="btn btn-success btn-sm">
-                  Mark Complete
-                </button>
-              </form>
-            </li>
-            <% }); %>
-          </ul>
-          <% } else { %>
-          <p class="text-muted">No incomplete todos!</p>
-          <% } %>
-        </div>
+<div class="todos-section mb-4">
+  <h3>Incomplete Todos</h3>
+  <% if (todos.some(todo => !todo.completed)) { %>
+  <ul class="list-group">
+    <% todos.filter(todo => !todo.completed).forEach((todo) => { %>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong><%= todo.title %></strong>
+        <span>
+          - Due:
+          <%= todo.dueDate ? todo.dueDate.toLocaleDateString() : "No due date" %>
+        </span>
+        <span class="badge <%= todo.priority === "High" ? "bg-danger" : todo.priority === "Medium" ? "bg-warning" : "bg-secondary" %>">
+          <%= todo.priority %>
+        </span>
+        <br /> Assigned to: <%= todo.assignee.username %>
+      </div>
+      <form action="/groups/<%= group._id %>/todos/delete/<%= todo._id %>" method="POST" class="d-inline-block">
+        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+      </form>
+      <form action="/todos/toggle/<%= todo._id %>" method="POST" class="d-inline-block">
+        <button type="submit" class="btn btn-success btn-sm">
+          Mark Complete
+        </button>
+      </form>
+    </li>
+    <% }); %>
+  </ul>
+  <% } else { %>
+  <p class="text-muted">No incomplete todos!</p>
+  <% } %>
+</div>
 
         <!-- Completed Todos -->
         <div class="todos-section">

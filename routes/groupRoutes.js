@@ -151,6 +151,50 @@ router.post("/:id/todos/add", isAuthenticated, async (req, res) => {
   }
 });
 
+// Delete a todo from the group
+router.post("/:id/todos/delete/:todoId", isAuthenticated, async (req, res) => {
+  try {
+    const group = await Group.findById(req.params.id);
+    const todo = await Todo.findById(req.params.todoId);
+
+    // Ensure the todo exists
+    if (!todo) {
+      req.flash("error", "Todo not found.");
+      return res.redirect(`/groups/${group._id}`);
+    }
+
+    // Ensure user is a group member
+    if (
+      !group.members.some((member) => member._id.equals(req.session.userId))
+    ) {
+      req.flash(
+        "error",
+        "You are not authorized to delete todos in this group."
+      );
+      return res.redirect(`/groups/${group._id}`);
+    }
+
+    // Ensure the user is the creator of the todo or the group owner
+    if (
+      todo.userId.toString() !== req.session.userId && // The user is not the one who created the todo
+      group.owner.toString() !== req.session.userId // The user is not the group owner
+    ) {
+      req.flash("error", "You are not authorized to delete this todo.");
+      return res.redirect(`/groups/${group._id}`);
+    }
+
+    // Delete the todo using findByIdAndDelete
+    await Todo.findByIdAndDelete(req.params.todoId);
+
+    req.flash("success", "Todo deleted successfully!");
+    res.redirect(`/groups/${group._id}`);
+  } catch (err) {
+    console.error("Error deleting todo:", err);
+    req.flash("error", "Could not delete the todo. Please try again.");
+    res.redirect(`/groups/${req.params.id}`);
+  }
+});
+
 // group management page
 router.get("/:id/manage", isAuthenticated, async (req, res) => {
   try {
