@@ -1,0 +1,45 @@
+<%- include("partials/header"); %>
+<link rel="stylesheet" href="/css/landing.css" />
+
+<main class="landing-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h2>Collaborate Smarter, Together</h2>
+      <p>
+        Your ultimate tool for group task management and real-time
+        communication.
+      </p>
+      <div class="cta-buttons">
+        <a href="/auth/login" class="btn btn-primary">Login</a>
+        <a href="/auth/register" class="btn btn-secondary">Register</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <div class="container">
+      <h3 class="text-center">Features</h3>
+      <div class="feature-grid">
+        <div class="feature">
+          <i class="bi bi-people"></i>
+          <h4>Group Collaboration</h4>
+          <p>Work seamlessly with your team.</p>
+        </div>
+        <div class="feature">
+          <i class="bi bi-check-circle"></i>
+          <h4>Task Management</h4>
+          <p>Assign, prioritize, and track tasks easily.</p>
+        </div>
+        <div class="feature">
+          <i class="bi bi-chat-dots"></i>
+          <h4>Real-Time Chat</h4>
+          <p>Communicate instantly with group members.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<%- include("partials/footer"); %>

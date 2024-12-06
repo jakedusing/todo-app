@@ -62,6 +62,11 @@ app.use("/groups", groupRoutes);
 app.use("/friends", friendshipRoutes);
 app.use("/chat", chatRoutes);
 
+// Serve the landing page at "/"
+app.get("/", (req, res) => {
+  res.render("landing");
+});
+
 // Websocket integration
 io.on("connection", (socket) => {
   console.log("A user connected");
