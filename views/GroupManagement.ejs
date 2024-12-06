@@ -30,6 +30,7 @@
       class="list-group-item d-flex justify-content-between align-items-center"
     >
       <span><%= member.username %></span>
+      <% if (member._id.toString() !== group.owner.toString()) { %>
       <form
         action="/groups/<%= group._id %>/remove/<%= member._id %>"
         method="POST"
@@ -37,6 +38,9 @@
       >
         <button class="btn btn-danger btn-sm">Remove</button>
       </form>
+      <% } else { %>
+      <span class="badge bg-secondary">Owner</span>
+      <% } %>
     </li>
     <% }); %>
   </ul>
