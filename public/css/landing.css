@@ -5,6 +5,7 @@ body {
   line-height: 1.6;
 }
 
+/* General Styles */
 .landing-page .header {
   background: #222;
   color: #fff;
@@ -53,11 +54,13 @@ body {
   display: flex;
   gap: 2rem;
   justify-content: center;
+  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
 }
 
 .features .feature {
   text-align: center;
   max-width: 300px;
+  flex: 1 1 calc(50% - 2rem); /* Two columns for mid-size screens */
 }
 
 .footer {
@@ -78,4 +81,36 @@ body {
 .footer-links a {
   color: #1e90ff;
   text-decoration: none;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .header .container {
+    flex-direction: column; /* Stack navigation for smaller screens */
+    text-align: center;
+  }
+
+  .nav-links {
+    flex-direction: column; /* Stack nav links */
+    gap: 0.5rem;
+  }
+
+  .hero h2 {
+    font-size: 2rem; /* Smaller font size for headers */
+  }
+
+  .hero .cta-buttons .btn {
+    padding: 0.5rem 1rem;
+    font-size: 1rem; /* Adjust button font size */
+  }
+
+  .features .feature-grid {
+    flex-direction: column; /* Stack features */
+    gap: 1rem;
+  }
+
+  .features .feature {
+    flex: 1 1 100%; /* Full-width features on smaller screens */
+    max-width: 100%;
+  }
 }
