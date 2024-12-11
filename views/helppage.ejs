@@ -1,0 +1,113 @@
+<%- include("partials/header"); %>
+
+<main class="container mt-4">
+  <h1 class="mb-4">How to Use TodoApp</h1>
+  <div class="accordion" id="helpAccordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingDashboard">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseDashboard"
+          aria-expanded="true"
+          aria-controls="collapseDashboard"
+        >
+          Dashboard
+        </button>
+      </h2>
+      <div
+        id="collapseDashboard"
+        class="accordion-collapse collapse show"
+        aria-labelledby="headingDashboard"
+        data-bs-parent="#helpAccordion"
+      >
+        <div class="accordion-body">
+          The Dashboard displays all your personal tasks. You can add tasks with
+          due dates and priorities, mark todos as complete, and delete todos.
+        </div>
+      </div>
+    </div>
+    <!-- Section for Groups -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingGroups">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseGroups"
+          aria-expanded="false"
+          aria-controls="collapseGroups"
+        >
+          Groups
+        </button>
+      </h2>
+      <div
+        id="collapseGroups"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingGroups"
+        data-bs-parent="#helpAccordion"
+      >
+        <div class="accordion-body">
+          Groups allow you to collaborate with other users. You can create a
+          group, invite members, assign tasks, and use the group chat to
+          communicate.
+        </div>
+      </div>
+    </div>
+    <!-- Friends -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingFriends">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseFriends"
+          aria-expanded="false"
+          aria-controls="collapseFriends"
+        >
+          Friends
+        </button>
+      </h2>
+      <div
+        id="collapseFriends"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingFriends"
+        data-bs-parent="#helpAccordion"
+      >
+        <div class="accordion-body">
+          Use the Friends section to browse other users and send friend
+          requests. Once accepted, you can add friends to your groups.
+        </div>
+      </div>
+    </div>
+    <!-- Profile section -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="headingProfile">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseProfile"
+          aria-expanded="false"
+          aria-controls="collapseProfile"
+        >
+          Profile
+        </button>
+      </h2>
+      <div
+        id="collapseProfile"
+        class="accordion-collapse collapse"
+        aria-labelledby="headingProfile"
+        data-bs-parent="#helpAccordion"
+      >
+        <div class="accordion-body">
+          Your profile page allows you to manage your account settings and view
+          your personal details.
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include("partials/footer"); %>

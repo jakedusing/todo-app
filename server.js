@@ -12,6 +12,7 @@ const todoRoutes = require("./routes/todoRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 const friendshipRoutes = require("./routes/friendshipRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const infoRoutes = require("./routes/infoRoutes");
 const Message = require("./models/Message");
 const User = require("./models/User");
 
@@ -61,6 +62,7 @@ app.use("/todos", todoRoutes);
 app.use("/groups", groupRoutes);
 app.use("/friends", friendshipRoutes);
 app.use("/chat", chatRoutes);
+app.use("/info", infoRoutes);
 
 // Serve the landing page at "/"
 app.get("/", (req, res) => {
