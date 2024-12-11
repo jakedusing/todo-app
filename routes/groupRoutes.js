@@ -102,11 +102,13 @@ router.get("/:id", isAuthenticated, async (req, res) => {
       "assignee",
       "username"
     );
+    console.log(req.session.user);
+    console.log(group.owner);
     res.render("GroupDetails", {
       group,
       todos,
       messages: formattedMessages,
-      user: req.session,
+      user: req.user, // was req.session
     });
   } catch (err) {
     console.error("Error fetching group details:", err);
