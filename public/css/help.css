@@ -1,0 +1,104 @@
+/* General Styling */
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #f8f9fa;
+  color: #343a40;
+  margin: 0;
+  padding: 0;
+}
+
+main.container {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  max-width: 700px; /* Make the container narrower */
+  margin: 2rem auto; /* Center the container */
+}
+
+/* Page Header */
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: #495057;
+  margin-bottom: 2rem;
+}
+
+/* Accordion Styling */
+.accordion-item {
+  border: none;
+  margin-bottom: 1rem;
+}
+
+.accordion-header {
+  background: #e9ecef;
+  border-radius: 5px;
+}
+
+.accordion-header button {
+  background: #e9ecef;
+  color: #343a40;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 1.25rem; /* Increase padding for taller accordion headers */
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  text-align: left;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.accordion-header button:hover,
+.accordion-header button:focus {
+  background: #d6d8db;
+  outline: none;
+}
+
+.accordion-header button.collapsed {
+  background: #f8f9fa;
+}
+
+.accordion-header button:not(.collapsed) {
+  background: #ffffff;
+  color: #343a40;
+  font-weight: bold;
+  border: 1px solid #d6d8db;
+}
+
+/* Accordion Body */
+.accordion-body {
+  background: #f8f9fa;
+  border: 1px solid #d6d8db;
+  border-radius: 5px;
+  padding: 1.5rem; /* Increase padding for taller accordion body */
+  font-size: 1rem;
+  color: #495057;
+  line-height: 1.6;
+}
+
+/* Spacing Between Accordion Items */
+.accordion-item + .accordion-item {
+  margin-top: 0.5rem;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  main.container {
+    padding: 1rem;
+    max-width: 90%; /* Make the container fluid on smaller screens */
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  .accordion-header button {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .accordion-body {
+    font-size: 0.95rem;
+  }
+}
