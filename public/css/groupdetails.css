@@ -1,10 +1,10 @@
-/* Adjust margins for the row and columns */
+/* General Layout Styling */
 .row {
   margin: 0;
 }
 
 .col-md-6 {
-  padding: 15px; /* Add some spacing between columns */
+  padding: 15px;
 }
 
 /* Chat Section Styling */
@@ -13,17 +13,21 @@
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  height: 100%; /* Ensure it takes the available vertical space */
+  height: calc(100vh - 200px); /* Adjust to ensure it's not too tall */
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-messages {
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #fff;
-  height: 300px; /* Fixed height for scrollable area */
+  height: 100%;
+  max-height: 300px; /* Maximum height */
   overflow-y: auto;
   padding: 10px;
   margin-bottom: 15px;
+  flex-grow: 1; /* Allow it to expand with the container */
 }
 
 .chat-message {
@@ -35,16 +39,106 @@
   color: #007bff;
 }
 
+.input-group {
+  display: flex;
+  justify-content: space-between;
+}
+
 .input-group .form-control {
+  flex: 1; /* Allow the input to take up remaining space */
   border-radius: 5px 0 0 5px;
+  min-width: 0; /* Prevent overflow issues */
+  box-sizing: border-box;
 }
 
 .input-group .btn {
   border-radius: 0 5px 5px 0;
+  padding: 0.75rem 1rem;
 }
 
-.message-time {
-  font-size: 0.8em;
-  color: #666;
-  margin-left: 10px;
+/* Add spacing between buttons at 1200px */
+@media (max-width: 1200px) {
+  .col-md-6 {
+    padding: 20px;
+  }
+
+  .todos-section .list-group-item .btn {
+    margin-left: 10px; /* Add margin between the buttons */
+  }
+}
+
+/* Responsive Design for Tablet (992px to 768px) */
+@media (max-width: 992px) and (min-width: 768px) {
+  .row {
+    flex-direction: row; /* Keep side-by-side layout */
+    justify-content: center; /* Center the columns horizontally */
+    align-items: flex-start;
+  }
+
+  .col-md-6 {
+    flex: 1;
+    max-width: 50%; /* Equal width columns */
+    padding: 15px;
+  }
+
+  .chat-section {
+    height: auto; /* Let the chat section adjust its height */
+    margin-top: 20px; /* Add spacing for clarity */
+    flex: 1; /* Take available space evenly */
+  }
+
+  .chat-messages {
+    max-height: 250px; /* Slightly smaller height for mobile */
+  }
+
+  .input-group {
+    flex-direction: row; /* Keep input and button side-by-side */
+    align-items: center; /* Align items properly */
+  }
+
+  .input-group .form-control {
+    flex: 1; /* Full width */
+    margin-right: 10px; /* Add space between input and button */
+  }
+
+  .input-group .btn {
+    flex-shrink: 0; /* Prevent button from resizing */
+  }
+}
+
+/* Responsive Design for Small Mobile (768px and below) */
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column; /* Stack columns vertically on mobile */
+    align-items: stretch; /* Ensure content spans the width */
+  }
+
+  .col-md-6 {
+    padding: 10px; /* Reduce padding for mobile */
+  }
+
+  .chat-section {
+    height: auto; /* Adjust height for mobile */
+    margin-top: 20px; /* Add some spacing from the other sections */
+  }
+
+  .chat-messages {
+    max-height: 250px; /* Limit height for mobile */
+  }
+
+  .input-group {
+    flex-direction: column; /* Stack input elements vertically */
+  }
+
+  .input-group .form-control {
+    font-size: 1rem; /* Ensure it's big enough for readability */
+    height: 40px; /* Adjust height for readability */
+    margin-bottom: 10px; /* Add space below input */
+    width: 100%; /* Full-width input */
+  }
+
+  .input-group .btn {
+    width: 100%; /* Full-width button */
+    padding: 0.75rem 1rem;
+  }
 }
