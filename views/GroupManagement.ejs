@@ -1,4 +1,5 @@
 <%- include("partials/header"); %>
+<link rel="stylesheet" href="/css/groupmanagement.css" />
 
 <main class="container mt-5">
   <!-- Flash Messages-->
@@ -23,6 +24,13 @@
     ></button>
   </div>
   <% } %>
+
+  <!-- Back to group button -->
+  <div class="mb-4">
+    <a href="/groups/<%= group._id %>" class="btn btn-secondary">
+      Back to Group
+    </a>
+  </div>
   <h1>Manage Group: <%= group.name %></h1>
   <ul class="list-group mb-4">
     <% group.members.forEach(member => { %>
