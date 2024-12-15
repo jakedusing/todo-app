@@ -30,7 +30,7 @@ const dbUrl = process.env.MONGO_URI;
 mongoose
   .connect(dbUrl)
   .then(() => console.log("mongodb connected"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Middleware
 app.use(express.static(path.join(__dirname, "public")));
