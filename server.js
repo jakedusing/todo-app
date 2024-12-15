@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo");
 const dotenv = require("dotenv");
 const path = require("path");
 const session = require("express-session");
@@ -38,10 +39,17 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: "secret-key",
+    secret: process.env.SESSSION_SECRET || "fallback-secret",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: "sessions",
+    }),
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
   })
 );
 app.use((req, res, next) => {
