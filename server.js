@@ -23,6 +23,14 @@ const app = express();
 const server = http.createServer(app); // wrap express app with HTTP server
 const io = new Server(server); // create socket.io instance
 
+const dbUrl = process.env.MONGO_URI;
+
+// Database connection
+mongoose
+  .connect(dbUrl)
+  .then(() => console.log("mongodb connected"))
+  .catch((err) => console.log(err));
+
 // Middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.set("views", path.join(__dirname, "views"));
@@ -50,12 +58,6 @@ app.use((req, res, next) => {
   res.locals.error_msg = req.flash("error");
   next();
 });
-
-// Database connection
-mongoose
-  .connect(process.env.MONGO_URI, {})
-  .then(() => console.log("mongodb connected"))
-  .catch((err) => console.log(err));
 
 // Routes
 app.use("/auth", authRoutes);
