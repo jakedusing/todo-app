@@ -32,12 +32,19 @@ const server = http.createServer(app); // wrap express app with HTTP server
 const io = new Server(server); // create socket.io instance
 
 const dbUrl = process.env.MONGO_URI;
+const secret = process.env.SESSION_SECRET || "fallback-secret";
 
 // Database connection
 mongoose
   .connect(dbUrl)
   .then(() => console.log("mongodb connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
+
+const store = new MongoDBStore({
+  url: dbUrl,
+  secret,
+  touchAfter: 24 * 60 * 60,
+});
 
 // Middleware
 app.use(express.static(path.join(__dirname, "public")));
@@ -46,13 +53,10 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: process.env.SESSSION_SECRET || "fallback-secret",
+    store,
+    secret,
     resave: false,
     saveUninitialized: true,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
-      collectionName: "sessions",
-    }),
     cookie: {
       //secure: true,
       httpOnly: true,
