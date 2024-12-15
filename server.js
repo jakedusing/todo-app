@@ -24,6 +24,8 @@ const infoRoutes = require("./routes/infoRoutes");
 const Message = require("./models/Message");
 const User = require("./models/User");
 
+const MongoDBStore = require("connect-mongo")(session);
+
 dotenv.config();
 const app = express();
 
