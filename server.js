@@ -53,25 +53,27 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-  session({
-    store,
-    secret,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      //secure: true,
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-    },
-  })
-);
+
+const sessionConfig = {
+  store,
+  name: "session",
+  secret,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+};
+
 app.use((req, res, next) => {
   res.locals.user = req.session.userId
     ? { id: req.session.userId, username: req.session.username }
     : null;
   next();
 });
+app.use(session(sessionConfig));
 app.use(flash());
 
 // Middleware to make flash messages available in templates
