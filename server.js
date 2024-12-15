@@ -61,7 +61,7 @@ app.use("/auth", authRoutes);
 app.use("/todos", todoRoutes);
 app.use("/groups", groupRoutes);
 app.use("/friends", friendshipRoutes);
-app.use("/chat", chatRoutes);
+//app.use("/chat", chatRoutes);
 app.use("/info", infoRoutes);
 
 // Serve the landing page at "/"

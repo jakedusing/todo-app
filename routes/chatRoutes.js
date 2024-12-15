@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const isAuthenticated = require("../middleware/auth");
-const Chat = require("../models/Chat");
+//const Chat = require("../models/Chat");
 const Group = require("../models/Group");
 
 // Fetch chat messages for a group

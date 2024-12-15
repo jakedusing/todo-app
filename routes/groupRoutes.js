@@ -2,7 +2,6 @@ const express = require("express");
 const Group = require("../models/Group");
 const Todo = require("../models/Todo");
 const User = require("../models/User");
-const Chat = require("../models/Chat");
 const Message = require("../models/Message");
 const Friendship = require("../models/Friendship");
 const isAuthenticated = require("../middleware/auth");
@@ -102,8 +101,8 @@ router.get("/:id", isAuthenticated, async (req, res) => {
       "assignee",
       "username"
     );
-    console.log(req.session.user);
-    console.log(group.owner);
+    //console.log(req.session.user);
+    //console.log(group.owner);
     res.render("GroupDetails", {
       group,
       todos,
