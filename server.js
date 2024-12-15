@@ -1,3 +1,10 @@
+//capture deprecation warnings early
+process.on("warning", (warning) => {
+  console.log("Deprecation warning caught: ", warning.name);
+  console.log("Message:", warning.message);
+  console.log("Stack trace:", warning.stack);
+});
+
 const express = require("express");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
@@ -47,7 +54,7 @@ app.use(
       collectionName: "sessions",
     }),
     cookie: {
-      secure: true,
+      //secure: true,
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
