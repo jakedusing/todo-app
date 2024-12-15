@@ -1,10 +1,3 @@
-//capture deprecation warnings early
-process.on("warning", (warning) => {
-  console.log("Deprecation warning caught: ", warning.name);
-  console.log("Message:", warning.message);
-  console.log("Stack trace:", warning.stack);
-});
-
 const express = require("express");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
@@ -24,8 +17,6 @@ const infoRoutes = require("./routes/infoRoutes");
 const Message = require("./models/Message");
 const User = require("./models/User");
 
-const MongoDBStore = require("connect-mongo")(session);
-
 dotenv.config();
 const app = express();
 
@@ -34,7 +25,6 @@ const server = http.createServer(app); // wrap express app with HTTP server
 const io = new Server(server); // create socket.io instance
 
 const dbUrl = process.env.MONGO_URI;
-const secret = process.env.SESSION_SECRET || "fallback-secret";
 
 // Database connection
 mongoose
@@ -42,38 +32,33 @@ mongoose
   .then(() => console.log("mongodb connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-const store = new MongoDBStore({
-  url: dbUrl,
-  secret,
-  touchAfter: 24 * 60 * 60,
-});
-
 // Middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
-
-const sessionConfig = {
-  store,
-  name: "session",
-  secret,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-    expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-    maxAge: 1000 * 60 * 60 * 24 * 7,
-  },
-};
-
+app.use(
+  session({
+    secret: process.env.SESSSION_SECRET || "fallback-secret",
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: "sessions",
+    }),
+    cookie: {
+      secure: true,
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
+  })
+);
 app.use((req, res, next) => {
   res.locals.user = req.session.userId
     ? { id: req.session.userId, username: req.session.username }
     : null;
   next();
 });
-app.use(session(sessionConfig));
 app.use(flash());
 
 // Middleware to make flash messages available in templates
@@ -169,6 +154,12 @@ io.on("connection", (socket) => {
   });
 });
 
+//capture deprecation warnings early
+process.on("warning", (warning) => {
+  console.log("Deprecation warning caught: ", warning.name);
+  console.log("Message:", warning.message);
+  console.log("Stack trace:", warning.stack);
+});
 // Start server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`server running on port ${PORT}`));
